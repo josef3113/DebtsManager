@@ -101,7 +101,9 @@
                 android:background="@drawable/btn_rounded_green_300"
                 android:text="Login"
                 android:textAllCaps="false"
-                android:textColor="@color/blue_grey_900" />
+                android:textColor="@color/blue_grey_900"
+                android:id="@+id/loginSubmitBtn"
+                />
 
             <View
                 android:layout_width="0dp"

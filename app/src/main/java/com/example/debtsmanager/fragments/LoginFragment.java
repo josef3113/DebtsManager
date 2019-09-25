@@ -50,5 +50,18 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        Button submitBtn = view.findViewById(R.id.loginSubmitBtn);
+
+        submitBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_tabsMenuFragment);
+            }
+        });
+
+
+
     }
 }

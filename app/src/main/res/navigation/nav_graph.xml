@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_tabsMenuFragment"
+            app:destination="@id/tabsMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.example.debtsmanager.fragments.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/tabsMenuFragment"
+        android:name="com.example.debtsmanager.fragments.TabsMenuFragment"
+        android:label="fragment_tabs_menu"
+        tools:layout="@layout/fragment_tabs_menu" />
 </navigation>
