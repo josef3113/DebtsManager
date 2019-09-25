@@ -2,24 +2,24 @@ package com.example.debtsmanager.models;
 
 public class Debt {
 
-    User FromUser;
-    User ToUser;
+    String From;
+    String To;
     int Amount;
 
-    public User getFromUser() {
-        return FromUser;
+    public String getFrom() {
+        return From;
     }
 
-    public void setFromUser(User fromUser) {
-        FromUser = fromUser;
+    public void setFrom(String from) {
+        this.From = from;
     }
 
-    public User getToUser() {
-        return ToUser;
+    public String getTo() {
+        return To;
     }
 
-    public void setToUser(User toUser) {
-        ToUser = toUser;
+    public void setTo(String to) {
+        this.To = to;
     }
 
     public int getAmount() {

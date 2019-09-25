@@ -3,6 +3,7 @@ package com.example.debtsmanager.controllers;
 import androidx.annotation.NonNull;
 
 import com.example.debtsmanager.interfaces.RequestListener;
+import com.example.debtsmanager.models.Debt;
 import com.example.debtsmanager.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -130,6 +131,23 @@ public class FirebaseController
 
     }
 
-
+    public void debtToMe(final RequestListener requestListener)
+    {
+        db.collection("Debts")
+                .whereEqualTo("to", currentUser.getName())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+        @Override
+        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            List<Debt> debts = task.getResult().toObjects(Debt.class);
+            if (!debts.isEmpty()) {
+                requestListener.onComplete(debts);
+            } else {
+                requestListener.onError("No Data");
+            }
+        }
+        });
+    }
 
 }
+
