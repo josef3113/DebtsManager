@@ -6,24 +6,21 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.debtsmanager.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
+public class SignUpFragment extends Fragment {
 
-public class LoginFragment extends Fragment {
 
-
-    public LoginFragment() {
+    public SignUpFragment() {
         // Required empty public constructor
     }
 
@@ -32,23 +29,21 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
-
+        return inflater.inflate(R.layout.fragment_sign_up, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState)
-    {
-        TextView signUpBtn = view.findViewById(R.id.loginSignUpBtn);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        signUpBtn.setOnClickListener(new View.OnClickListener()
-        {
+        Button submitBtn = view.findViewById(R.id.signUpSubmitBtn);
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
+                //TODO add firebase to project
+                getActivity().onBackPressed();
             }
         });
-
     }
 }
