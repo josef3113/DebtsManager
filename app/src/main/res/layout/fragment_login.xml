@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Username"
+                android:text="Email"
                 android:textAlignment="center"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/blue_grey_500"
@@ -46,7 +46,9 @@
                 android:maxLength="50"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="@color/blue_grey_300" />
+                android:textColor="@color/blue_grey_300"
+                android:id="@+id/loginEmailEt"
+                />
 
             <View
                 android:layout_width="0dp"
@@ -70,7 +72,9 @@
                 android:maxLength="50"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="@color/blue_grey_300" />
+                android:textColor="@color/blue_grey_300"
+                android:id="@+id/loginPasswordEt"
+                />
 
             <View
                 android:layout_width="0dp"
@@ -102,7 +106,7 @@
                 android:text="Login"
                 android:textAllCaps="false"
                 android:textColor="@color/blue_grey_900"
-                android:id="@+id/loginSubmitBtn"
+                android:id="@+id/loginLoginBtn"
                 />
 
             <View

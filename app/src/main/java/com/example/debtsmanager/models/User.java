@@ -17,17 +17,14 @@ public class User {
         Name = name;
     }
 
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
-    }
-
     private String Email;
     private String Name;
-    private String Password;
 
+    public User(String email, String name) {
+        Email = email;
+        Name = name;
+    }
 
+    public User() {
+    }
 }

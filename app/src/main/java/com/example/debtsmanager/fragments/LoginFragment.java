@@ -8,20 +8,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.debtsmanager.R;
+import com.example.debtsmanager.controllers.FirebaseController;
+import com.example.debtsmanager.interfaces.RequestListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment
+{
 
+    FirebaseController firebaseController;
+
+    EditText emailEt;
+    EditText passwordEt;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -39,7 +51,12 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState)
     {
+        firebaseController = FirebaseController.getInstance();
+
         TextView signUpBtn = view.findViewById(R.id.loginSignUpBtn);
+
+        emailEt = view.findViewById(R.id.loginEmailEt);
+        passwordEt = view.findViewById(R.id.loginPasswordEt);
 
         signUpBtn.setOnClickListener(new View.OnClickListener()
         {
@@ -50,14 +67,29 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        Button submitBtn = view.findViewById(R.id.loginSubmitBtn);
+        Button submitBtn = view.findViewById(R.id.loginLoginBtn);
 
         submitBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_tabsMenuFragment);
+
+                firebaseController.loginUser(emailEt.getText().toString(), passwordEt.getText().toString()
+                        , new RequestListener() {
+                            @Override
+                            public void onComplete(Object o)
+                            {
+                                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_tabsMenuFragment);
+
+                            }
+
+                            @Override
+                            public void onError(String msg) {
+                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
             }
         });
 
