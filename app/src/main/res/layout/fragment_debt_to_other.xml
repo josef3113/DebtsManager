@@ -3,12 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.DebtToOtherFragment">
+    tools:context=".fragments.DebtToOtherFragment"
+    android:background="@color/blue_grey_900"
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/debtToPayRecycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:scrollbars="vertical"
+        android:scrollingCache="true" />
+
 
 </FrameLayout>

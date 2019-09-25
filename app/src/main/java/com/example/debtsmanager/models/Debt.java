@@ -29,4 +29,10 @@ public class Debt {
     public void setAmount(int amount) {
         Amount = amount;
     }
+
+    public Debt(User fromUser, User toUser, int amount) {
+        FromUser = fromUser;
+        ToUser = toUser;
+        Amount = amount;
+    }
 }

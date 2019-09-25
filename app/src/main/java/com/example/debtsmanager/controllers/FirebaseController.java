@@ -51,7 +51,6 @@ public class FirebaseController
                                @Override
                                public void onComplete(@NonNull Task<QuerySnapshot> task)
                                {
-
                                    if(task.isSuccessful())
                                    {
                                        List<User> users = task.getResult().toObjects(User.class);
@@ -61,8 +60,6 @@ public class FirebaseController
                                    }
                                }
                            });
-
-
 
                        }else
                        {

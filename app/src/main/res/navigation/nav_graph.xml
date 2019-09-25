@@ -26,5 +26,14 @@
         android:id="@+id/tabsMenuFragment"
         android:name="com.example.debtsmanager.fragments.TabsMenuFragment"
         android:label="fragment_tabs_menu"
-        tools:layout="@layout/fragment_tabs_menu" />
+        tools:layout="@layout/fragment_tabs_menu" >
+        <action
+            android:id="@+id/action_tabsMenuFragment_to_debtToOtherFragment"
+            app:destination="@id/debtToOtherFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/debtToOtherFragment"
+        android:name="com.example.debtsmanager.fragments.DebtToOtherFragment"
+        android:label="fragment_debt_to_other"
+        tools:layout="@layout/fragment_debt_to_other" />
 </navigation>
