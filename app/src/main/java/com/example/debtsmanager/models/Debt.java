@@ -30,9 +30,12 @@ public class Debt {
         Amount = amount;
     }
 
-    public Debt(User fromUser, User toUser, int amount) {
-        FromUser = fromUser;
-        ToUser = toUser;
+    public Debt() {
+    }
+
+    public Debt(String from, String to, int amount) {
+        From = from;
+        To = to;
         Amount = amount;
     }
 }

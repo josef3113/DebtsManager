@@ -12,19 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.adapters.DebtToOtherAdapter;
+import com.example.debtsmanager.controllers.FirebaseController;
+import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
 import com.example.debtsmanager.models.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DebtToOtherFragment extends Fragment {
 
+
+    FirebaseController firebaseController;
 
     public DebtToOtherFragment()
     {
@@ -44,14 +50,30 @@ public class DebtToOtherFragment extends Fragment {
     {
         RecyclerView recyclerView = view.findViewById(R.id.debtToPayRecycleView);
 
-        ArrayList<Debt> debts = new ArrayList<>();
-        debts.add(new Debt(new User("a","a"),new User("b","b"),50));
-        debts.add(new Debt(new User("a","a"),new User("c","c"),150));
-        debts.add(new Debt(new User("a","a"),new User("d","d"),250));
+        ArrayList<Debt> tempdebts = new ArrayList<>();
 
-        DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(),debts);
+        firebaseController = FirebaseController.getInstance();
+
+        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(),tempdebts);
         recyclerView.setAdapter(debtAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        firebaseController.debtToMe(new RequestListener()
+        {
+            @Override
+            public void onComplete(Object o)
+            {
+                List<Debt> debts1 = (List<Debt>) o;
+
+                debtAdapter.setlist(debts1);
+            }
+
+            @Override
+            public void onError(String msg)
+            {
+                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 }

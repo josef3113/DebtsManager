@@ -42,7 +42,7 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
         Debt debt = list.get(position);
 
         holder.debtToCellAmount.setText(debt.getAmount()+"");
-        holder.debtToCellToPerson.setText(debt.getToUser().getName());
+        holder.debtToCellToPerson.setText(debt.getFrom());
 
     }
 
