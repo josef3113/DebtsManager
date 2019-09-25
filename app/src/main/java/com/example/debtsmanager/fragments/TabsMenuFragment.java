@@ -49,5 +49,15 @@ public class TabsMenuFragment extends Fragment
             }
         });
 
+        Button otherDebts = view.findViewById(R.id.tebsMenuOtherDebts);
+
+        otherDebts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtToMeFragment);
+
+            }
+        });
     }
 }

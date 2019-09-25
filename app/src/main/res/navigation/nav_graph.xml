@@ -30,10 +30,18 @@
         <action
             android:id="@+id/action_tabsMenuFragment_to_debtToOtherFragment"
             app:destination="@id/debtToOtherFragment" />
+        <action
+            android:id="@+id/action_tabsMenuFragment_to_debtToMeFragment"
+            app:destination="@+id/debtToMeFragment" />
     </fragment>
     <fragment
         android:id="@+id/debtToOtherFragment"
         android:name="com.example.debtsmanager.fragments.DebtToOtherFragment"
         android:label="fragment_debt_to_other"
         tools:layout="@layout/fragment_debt_to_other" />
+    <fragment
+        android:id="@+id/debtToMeFragment"
+        android:name="com.example.debtsmanager.fragments.DebtToMeFragment"
+        android:label="fragment_debt_to_me"
+        tools:layout="@layout/fragment_debt_to_me" />
 </navigation>

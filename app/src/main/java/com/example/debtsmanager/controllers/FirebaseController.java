@@ -146,5 +146,22 @@ public class FirebaseController
         });
     }
 
+    public void debtToOthers(final RequestListener requestListener)
+    {
+        db.collection("Debts")
+                .whereEqualTo("from", currentUser.getName())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<Debt> debts = task.getResult().toObjects(Debt.class);
+                if (!debts.isEmpty()) {
+                    requestListener.onComplete(debts);
+                } else {
+                    requestListener.onError("No Data");
+                }
+            }
+        });
+    }
 }
 
