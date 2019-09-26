@@ -45,33 +45,37 @@ public class DebtToMeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
-        RecyclerView recyclerView = view.findViewById(R.id.debtToOtherFragmentRecycleView);
+        try {
 
-        ArrayList<Debt> tempdebts = new ArrayList<>();
 
-        firebaseController = FirebaseController.getInstance();
+            RecyclerView recyclerView = view.findViewById(R.id.debtToOtherFragmentRecycleView);
 
-        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(),tempdebts);
-        recyclerView.setAdapter(debtAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            ArrayList<Debt> tempdebts = new ArrayList<>();
 
-        firebaseController.debtToOthers(new RequestListener()
+            firebaseController = FirebaseController.getInstance();
+
+            final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), tempdebts);
+            recyclerView.setAdapter(debtAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            firebaseController.debtToOthers(new RequestListener() {
+                @Override
+                public void onComplete(Object o) {
+                    List<Debt> debts1 = (List<Debt>) o;
+
+                    debtAdapter.setlist(debts1);
+                }
+
+                @Override
+                public void onError(String msg) {
+                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }catch (Exception ex)
         {
-            @Override
-            public void onComplete(Object o)
-            {
-                List<Debt> debts1 = (List<Debt>) o;
-
-                debtAdapter.setlist(debts1);
-            }
-
-            @Override
-            public void onError(String msg)
-            {
-                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-
-            }
-        });
+            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.debtsmanager.R;
 
@@ -38,26 +39,44 @@ public class TabsMenuFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
-        Button myDebts = view.findViewById(R.id.tebsMenuMyDebts);
+        try {
 
-        myDebts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtToOtherFragment);
+            Button myDebts = view.findViewById(R.id.tebsMenuMyDebts);
 
-            }
-        });
+            myDebts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        Button otherDebts = view.findViewById(R.id.tebsMenuOtherDebts);
+                    Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtToOtherFragment);
 
-        otherDebts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                }
+            });
 
-                Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtToMeFragment);
+            Button otherDebts = view.findViewById(R.id.tebsMenuOtherDebts);
 
-            }
-        });
+            otherDebts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtToMeFragment);
+
+                }
+            });
+
+            Button addDebts = view.findViewById(R.id.tebsMenuAddDebt);
+
+            addDebts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtPayFragment);
+
+                }
+            });
+        }catch (Exception ex)
+        {
+            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

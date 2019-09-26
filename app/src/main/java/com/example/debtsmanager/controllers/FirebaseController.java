@@ -163,5 +163,33 @@ public class FirebaseController
             }
         });
     }
+
+    public void addDebt(String toUser,String stringAmount,final RequestListener requestListener)
+    {
+        try {
+
+            Debt debtToAdd = new Debt(currentUser.getName(), toUser, Integer.parseInt(stringAmount));
+
+            db.collection("Debts").add(debtToAdd).addOnCompleteListener(
+                    new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if (task.isSuccessful()) {
+                                requestListener.onComplete(null);
+                            } else {
+                                requestListener.onError(task.getException().getMessage());
+                            }
+                        }
+
+                    }
+
+            );
+        }
+        catch (Exception ex)
+        {
+            requestListener.onError(ex.getMessage());
+        }
+    }
+
 }
 

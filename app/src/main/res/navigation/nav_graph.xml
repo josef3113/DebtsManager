@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_tabsMenuFragment_to_debtToMeFragment"
             app:destination="@+id/debtToMeFragment" />
+        <action
+            android:id="@+id/action_tabsMenuFragment_to_debtPayFragment"
+            app:destination="@id/debtPayFragment" />
     </fragment>
     <fragment
         android:id="@+id/debtToOtherFragment"
@@ -44,4 +47,9 @@
         android:name="com.example.debtsmanager.fragments.DebtToMeFragment"
         android:label="fragment_debt_to_me"
         tools:layout="@layout/fragment_debt_to_me" />
+    <fragment
+        android:id="@+id/debtPayFragment"
+        android:name="com.example.debtsmanager.fragments.DebtPayFragment"
+        android:label="fragment_debt_pay"
+        tools:layout="@layout/fragment_debt_pay" />
 </navigation>
