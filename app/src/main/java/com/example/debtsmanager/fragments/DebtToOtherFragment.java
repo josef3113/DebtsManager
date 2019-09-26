@@ -30,7 +30,7 @@ import java.util.List;
 public class DebtToOtherFragment extends Fragment {
 
 
-    FirebaseController firebaseController;
+    private FirebaseController firebaseController;
 
     public DebtToOtherFragment()
     {
@@ -50,29 +50,29 @@ public class DebtToOtherFragment extends Fragment {
     {
         RecyclerView recyclerView = view.findViewById(R.id.debtToPayRecycleView);
 
-        ArrayList<Debt> tempdebts = new ArrayList<>();
 
         firebaseController = FirebaseController.getInstance();
 
-        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(),tempdebts);
+        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(),new ArrayList<Debt>());
         recyclerView.setAdapter(debtAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        firebaseController.debtToMe(new RequestListener()
+        firebaseController.debtToMe(new RequestListener<List<Debt>>()
         {
             @Override
-            public void onComplete(Object o)
+            public void onComplete(List<Debt> debtList)
             {
-                List<Debt> debts1 = (List<Debt>) o;
+                if(debtList != null)
+                {
+                    debtAdapter.setlist(debtList);
+                }
 
-                debtAdapter.setlist(debts1);
             }
 
             @Override
             public void onError(String msg)
             {
                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-
             }
         });
     }
