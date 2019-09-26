@@ -34,7 +34,7 @@ public class DebtToOtherFragment extends Fragment {
 
     public DebtToOtherFragment()
     {
-        // Required empty public constructor
+        // Required empty public constructor//
     }
 
 
