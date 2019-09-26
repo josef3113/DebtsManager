@@ -30,11 +30,11 @@ import java.util.List;
 public class DebtToOtherFragment extends Fragment {
 
 
-    private FirebaseController firebaseController;
+    FirebaseController firebaseController;
 
     public DebtToOtherFragment()
     {
-        // Required empty public constructor
+        // Required empty public constructor//
     }
 
 
@@ -48,32 +48,36 @@ public class DebtToOtherFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
-        RecyclerView recyclerView = view.findViewById(R.id.debtToPayRecycleView);
+        try {
 
 
-        firebaseController = FirebaseController.getInstance();
+            RecyclerView recyclerView = view.findViewById(R.id.debtToPayRecycleView);
 
-        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(),new ArrayList<Debt>());
-        recyclerView.setAdapter(debtAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            ArrayList<Debt> tempdebts = new ArrayList<>();
 
-        firebaseController.debtToMe(new RequestListener<List<Debt>>()
-        {
-            @Override
-            public void onComplete(List<Debt> debtList)
-            {
-                if(debtList != null)
-                {
-                    debtAdapter.setlist(debtList);
+            firebaseController = FirebaseController.getInstance();
+
+            final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), tempdebts);
+            recyclerView.setAdapter(debtAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            firebaseController.debtToMe(new RequestListener() {
+                @Override
+                public void onComplete(Object o) {
+                    List<Debt> debts1 = (List<Debt>) o;
+
+                    debtAdapter.setlist(debts1);
                 }
 
-            }
+                @Override
+                public void onError(String msg) {
+                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onError(String msg)
-            {
-                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-            }
-        });
+                }
+            });
+        }catch (Exception ex)
+        {
+            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -41,36 +41,40 @@ public class SignUpFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        firebaseController = FirebaseController.getInstance();
+        try {
 
-        Button submitBtn = view.findViewById(R.id.signUpSubmitBtn);
 
-        final EditText userNameET = view.findViewById(R.id.signUpUserNameET);
-        final EditText emailET = view.findViewById(R.id.signUpEmailET);
-        final EditText passwordET = view.findViewById(R.id.signUpPasswordET);
+            firebaseController = FirebaseController.getInstance();
 
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                User user = new User(emailET.getText().toString(),userNameET.getText().toString());
+            Button submitBtn = view.findViewById(R.id.signUpSubmitBtn);
 
-                firebaseController.signUpUser(user, passwordET.getText().toString(), new RequestListener()
-                {
-                    @Override
-                    public void onComplete(Object o)
-                    {
-                        getActivity().onBackPressed();
-                    }
+            final EditText userNameET = view.findViewById(R.id.signUpUserNameET);
+            final EditText emailET = view.findViewById(R.id.signUpEmailET);
+            final EditText passwordET = view.findViewById(R.id.signUpPasswordET);
 
-                    @Override
-                    public void onError(String msg)
-                    {
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+            submitBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    User user = new User(emailET.getText().toString(), userNameET.getText().toString());
 
-            }
-        });
+                    firebaseController.signUpUser(user, passwordET.getText().toString(), new RequestListener() {
+                        @Override
+                        public void onComplete(Object o) {
+                            getActivity().onBackPressed();
+                        }
+
+                        @Override
+                        public void onError(String msg) {
+                            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

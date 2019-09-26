@@ -47,48 +47,49 @@ public class LoginFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState)
     {
-        firebaseController = FirebaseController.getInstance();
+        try {
 
-        TextView signUpBtn = view.findViewById(R.id.loginSignUpBtn);
 
-        emailEt = view.findViewById(R.id.loginEmailEt);
-        passwordEt = view.findViewById(R.id.loginPasswordEt);
+            firebaseController = FirebaseController.getInstance();
 
-        signUpBtn.setOnClickListener(new View.OnClickListener()
+            TextView signUpBtn = view.findViewById(R.id.loginSignUpBtn);
+
+            emailEt = view.findViewById(R.id.loginEmailEt);
+            passwordEt = view.findViewById(R.id.loginPasswordEt);
+
+            signUpBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
+                }
+            });
+
+            Button submitBtn = view.findViewById(R.id.loginLoginBtn);
+
+            submitBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    firebaseController.loginUser(emailEt.getText().toString(), passwordEt.getText().toString()
+                            , new RequestListener() {
+                                @Override
+                                public void onComplete(Object o) {
+                                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_tabsMenuFragment);
+
+                                }
+
+                                @Override
+                                public void onError(String msg) {
+                                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                }
+            });
+        }catch (Exception ex)
         {
-            @Override
-            public void onClick(View v)
-            {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
-            }
-        });
-
-        Button submitBtn = view.findViewById(R.id.loginLoginBtn);
-
-        submitBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                firebaseController.loginUser(emailEt.getText().toString(), passwordEt.getText().toString()
-                        , new RequestListener() {
-                            @Override
-                            public void onComplete(Object o)
-                            {
-                                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_tabsMenuFragment);
-
-                            }
-
-                            @Override
-                            public void onError(String msg) {
-                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-            }
-        });
-
+            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
 
     }
