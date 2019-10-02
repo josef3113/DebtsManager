@@ -64,7 +64,9 @@ public class DebtToOtherFragment extends Fragment {
 
         repository.setObserver(new DataChangeObserver() {
             @Override
-            public void dataChanged() {
+            public void dataChanged()
+            {
+                debtAdapter.setlist((ArrayList<Debt>) repository.getDebtsToOther());
                 debtAdapter.notifyDataSetChanged();
             }
         });
