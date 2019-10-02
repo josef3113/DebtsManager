@@ -55,17 +55,18 @@ public class DebtToMeFragment extends Fragment
 
         RecyclerView recyclerView = view.findViewById(R.id.debtToOtherFragmentRecycleView);
 
-        ArrayList<Debt> tempdebts = (ArrayList<Debt>) repository.getDebtsToMe();
 
         firebaseController = FirebaseController.getInstance();
 
-        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), tempdebts);
+        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), (ArrayList<Debt>) repository.getDebtsToMe());
         recyclerView.setAdapter(debtAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         repository.setObserver(new DataChangeObserver() {
             @Override
-            public void dataChanged() {
+            public void dataChanged()
+            {
+                debtAdapter.setlist(repository.getDebtsToMe());
                 debtAdapter.notifyDataSetChanged();
             }
         });
