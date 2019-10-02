@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.adapters.DebtToOtherAdapter;
 import com.example.debtsmanager.controllers.FirebaseController;
+import com.example.debtsmanager.controllers.Repository;
+import com.example.debtsmanager.interfaces.DataChangeObserver;
 import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
 import com.example.debtsmanager.models.User;
@@ -29,7 +31,7 @@ import java.util.List;
  */
 public class DebtToOtherFragment extends Fragment {
 
-
+    Repository repository;
     FirebaseController firebaseController;
 
     public DebtToOtherFragment()
@@ -48,36 +50,23 @@ public class DebtToOtherFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
-        try {
+        repository = Repository.getInstance();
 
+        RecyclerView recyclerView = view.findViewById(R.id.debtToPayRecycleView);
 
-            RecyclerView recyclerView = view.findViewById(R.id.debtToPayRecycleView);
+        //ArrayList<Debt> tempdebts = (ArrayList<Debt>) repository.getDebtsToOther();
 
-            ArrayList<Debt> tempdebts = new ArrayList<>();
+        firebaseController = FirebaseController.getInstance();
 
-            firebaseController = FirebaseController.getInstance();
+        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), (ArrayList<Debt>) repository.getDebtsToOther());
+        recyclerView.setAdapter(debtAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), tempdebts);
-            recyclerView.setAdapter(debtAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-            firebaseController.debtToMe(new RequestListener() {
-                @Override
-                public void onComplete(Object o) {
-                    List<Debt> debts1 = (List<Debt>) o;
-
-                    debtAdapter.setlist(debts1);
-                }
-
-                @Override
-                public void onError(String msg) {
-                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        }catch (Exception ex)
-        {
-            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        repository.setObserver(new DataChangeObserver() {
+            @Override
+            public void dataChanged() {
+                debtAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }

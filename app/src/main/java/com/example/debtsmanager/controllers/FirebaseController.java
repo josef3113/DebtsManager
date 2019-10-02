@@ -1,8 +1,7 @@
 package com.example.debtsmanager.controllers;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
@@ -12,10 +11,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class FirebaseController
 {
@@ -23,7 +28,10 @@ public class FirebaseController
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private User currentUser;
+
+
+
+
 
     private FirebaseController()
     {
@@ -58,8 +66,7 @@ public class FirebaseController
                                    {
                                        List<User> users = task.getResult().toObjects(User.class);
 
-                                       currentUser = users.get(0);
-                                       listener.onComplete(null);
+                                       listener.onComplete(users.get(0));
                                    }
                                }
                            });
@@ -130,84 +137,141 @@ public class FirebaseController
 
     }
 
-    public void debtToMe(final RequestListener requestListener)
+    public void debtToMe(User currentUser,final RequestListener requestListener)
     {
+
         db.collection("Debts")
                 .whereEqualTo("to", currentUser.getName())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-        {
-        @Override
-        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-            List<Debt> debts = task.getResult().toObjects(Debt.class);
-            if (!debts.isEmpty()) {
-                requestListener.onComplete(debts);
-            } else {
-                requestListener.onError("No Data");
-            }
-        }
-        });
+                .addSnapshotListener(new EventListener<QuerySnapshot>()
+                {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots
+                            , @Nullable FirebaseFirestoreException e)
+                    {
+                        if(e != null)
+                        {
+                            requestListener.onError(e.getMessage());
+                        }else
+                        {
+                            List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+                            List<Debt> tempList = new ArrayList<>();
+                            for(DocumentSnapshot doc: documents)
+                            {
+                                tempList.add(doc.toObject(Debt.class));
+                            }
+                            requestListener.onComplete(tempList);
+                        }
+                    }
+                });
     }
 
-    public void debtToOthers(final RequestListener requestListener)
+    public void debtToOthers(User currentUser, final RequestListener requestListener)
+    {
+
+
+        db.collection("Debts").whereEqualTo("from", currentUser.getName())
+                .addSnapshotListener(new EventListener<QuerySnapshot>()
+                {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots
+                            , @Nullable FirebaseFirestoreException e)
+                    {
+                       if(e != null)
+                       {
+                           requestListener.onError(e.getMessage());
+                       }else
+                       {
+                           List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+                           List<Debt> tempList = new ArrayList<>();
+                           for(DocumentSnapshot doc: documents)
+                           {
+                               tempList.add(doc.toObject(Debt.class));
+                           }
+                           requestListener.onComplete(tempList);
+                       }
+                    }
+                });
+
+    }
+
+    public void updateDebt(final Debt debt, final RequestListener requestListener)
     {
         db.collection("Debts")
-                .whereEqualTo("from", currentUser.getName())
+                .whereEqualTo("to",debt.getTo())
+                .whereEqualTo("from",debt.getFrom())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
         {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                List<Debt> debts = task.getResult().toObjects(Debt.class);
-                if (!debts.isEmpty()) {
-                    requestListener.onComplete(debts);
-                } else {
-                    requestListener.onError("No Data");
-                }
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+
+                db.collection("Debts").document(documentSnapshot.getId())
+                        .update("amount",debt.getAmount())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful())
+                                {
+                                    requestListener.onComplete(null);
+                                }else
+                                {
+                                    requestListener.onError(task.getException().getMessage());
+                                }
+                            }
+                        });
             }
         });
     }
 
-    public void addDebt(final String toUser, final String stringAmount, final RequestListener requestListener)
+    public void deleteDebt(final Debt debt, final RequestListener requestListener)
     {
-        try {
-
-            final Debt debtToAdd = new Debt(currentUser.getName(), toUser, Integer.parseInt(stringAmount));
-
-            db.collection("Debts")
-                    .whereEqualTo("from", currentUser.getName())
-                    .whereEqualTo("to",toUser)
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-            {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    List<Debt> debts = task.getResult().toObjects(Debt.class);
-                    if (debts.isEmpty()) {
-                        db.collection("Debts").add(debtToAdd).addOnCompleteListener(
-                                new OnCompleteListener<DocumentReference>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                                        if (task.isSuccessful()) {
-                                            requestListener.onComplete(null);
-                                        } else {
-                                            requestListener.onError(task.getException().getMessage());
-                                        }
-                                    }
-
-                                }
-
-                        );
-                    }
-                    else {
-
-                        //TODO think how to update the amount of debt
-                        requestListener.onError("Alredy Exsist Card from and to need to update this");
-                    }
-                }});
-        }
-
-        catch (Exception ex)
+        db.collection("Debts")
+                .whereEqualTo("to",debt.getTo())
+                .whereEqualTo("from",debt.getFrom())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
         {
-            requestListener.onError(ex.getMessage());
-        }
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+
+                db.collection("Debts").document(documentSnapshot.getId()).delete()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful())
+                                {
+                                    requestListener.onComplete(null);
+                                }else
+                                {
+                                    requestListener.onError(task.getException().getMessage());
+                                }
+                            }
+                        });
+            }
+        });
+    }
+
+    public void addDebt(Debt debt, final RequestListener requestListener)
+    {
+        db.collection("Debts")
+                .add(debt).addOnCompleteListener(new OnCompleteListener<DocumentReference>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task)
+            {
+                if(task.isSuccessful())
+                {
+                    requestListener.onComplete(null);
+                }else
+                {
+                    requestListener.onError(task.getException().getMessage());
+                }
+            }
+        });
+
+
     }
 
 }

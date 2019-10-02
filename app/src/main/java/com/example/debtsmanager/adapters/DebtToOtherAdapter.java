@@ -19,16 +19,15 @@ import java.util.List;
 public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.DebtToOtherAdapterHolder> {
 
     private List<Debt> list;
-    private Context context;
-
 
 
     public DebtToOtherAdapter(Context context, ArrayList<Debt> list) {
-        this.context = context;
+
         this.list = list;
     }
 
-    public DebtToOtherAdapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public DebtToOtherAdapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem = layoutInflater.inflate(R.layout.debt_to_cell, parent, false);
         DebtToOtherAdapterHolder holder = new DebtToOtherAdapterHolder(listItem);
@@ -44,7 +43,10 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
         holder.debtToCellAmount.setText(debt.getAmount()+"");
         holder.debtToCellToPerson.setText(debt.getFrom());
 
+
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -63,10 +65,10 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
         TextView debtToCellToPerson;
         TextView debtToCellDate;
 
+
         public DebtToOtherAdapterHolder(@NonNull View itemView)
         {
             super(itemView);
-
             personImage = itemView.findViewById(R.id.debtToCellPersonImage);
             debtToCellAmount = itemView.findViewById(R.id.debtToCellAmount);
             debtToCellToPerson = itemView.findViewById(R.id.debtToCellToPerson);

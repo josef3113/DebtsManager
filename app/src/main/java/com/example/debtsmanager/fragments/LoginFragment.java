@@ -12,11 +12,14 @@ import android.widget.Toast;
 
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.controllers.FirebaseController;
+import com.example.debtsmanager.controllers.Repository;
+import com.example.debtsmanager.interfaces.DataChangeObserver;
 import com.example.debtsmanager.interfaces.RequestListener;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 /**
@@ -47,49 +50,60 @@ public class LoginFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState)
     {
-        try {
+
+        final Repository repository = Repository.getInstance();
 
 
-            firebaseController = FirebaseController.getInstance();
+        firebaseController = FirebaseController.getInstance();
 
-            TextView signUpBtn = view.findViewById(R.id.loginSignUpBtn);
+        TextView signUpBtn = view.findViewById(R.id.loginSignUpBtn);
 
-            emailEt = view.findViewById(R.id.loginEmailEt);
-            passwordEt = view.findViewById(R.id.loginPasswordEt);
+        emailEt = view.findViewById(R.id.loginEmailEt);
+        passwordEt = view.findViewById(R.id.loginPasswordEt);
 
-            signUpBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
-                }
-            });
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
+            }
+        });
 
-            Button submitBtn = view.findViewById(R.id.loginLoginBtn);
+        Button submitBtn = view.findViewById(R.id.loginLoginBtn);
 
-            submitBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
 
-                    firebaseController.loginUser(emailEt.getText().toString(), passwordEt.getText().toString()
-                            , new RequestListener() {
-                                @Override
-                                public void onComplete(Object o) {
-                                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_tabsMenuFragment);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                                }
+                Bundle bundle = new Bundle();
 
-                                @Override
-                                public void onError(String msg) {
-                                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                }
-            });
-        }catch (Exception ex)
-        {
-            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+                bundle.putInt("animation",R.raw.loading2);
+                lottieAnimation.setArguments(bundle);
+
+                lottieAnimation.show(transaction,"lottieDialog");
+
+                repository.login(emailEt.getText().toString(), passwordEt.getText().toString()
+                        , new RequestListener() {
+                            @Override
+                            public void onComplete(Object o)
+                            {
+                                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_tabsMenuFragment);
+                                lottieAnimation.dismiss();
+                            }
+
+                            @Override
+                            public void onError(String msg) {
+                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                                lottieAnimation.dismiss();
+                            }
+                        });
+
+            }
+        });
 
 
     }

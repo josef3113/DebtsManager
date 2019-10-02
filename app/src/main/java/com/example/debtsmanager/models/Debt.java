@@ -1,5 +1,7 @@
 package com.example.debtsmanager.models;
 
+import androidx.annotation.Nullable;
+
 public class Debt {
 
     String From;
@@ -37,5 +39,13 @@ public class Debt {
         From = from;
         To = to;
         Amount = amount;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj)
+    {
+        Debt otherDebt = (Debt) obj;
+
+        return (otherDebt.From.equals(getFrom()) && otherDebt.To.equals(getTo()));
     }
 }
