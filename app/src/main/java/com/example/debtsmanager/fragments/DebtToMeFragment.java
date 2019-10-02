@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.adapters.DebtToOtherAdapter;
 import com.example.debtsmanager.controllers.FirebaseController;
+import com.example.debtsmanager.controllers.Repository;
+import com.example.debtsmanager.interfaces.DataChangeObserver;
 import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
 
@@ -26,8 +28,10 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DebtToMeFragment extends Fragment {
+public class DebtToMeFragment extends Fragment
+{
 
+    Repository repository;
     FirebaseController firebaseController;
 
     public DebtToMeFragment() {
@@ -45,37 +49,28 @@ public class DebtToMeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
-        try {
+        //Repository repository = Repository.getInstance();
+
+        repository = Repository.getInstance();
+
+        RecyclerView recyclerView = view.findViewById(R.id.debtToOtherFragmentRecycleView);
+
+        ArrayList<Debt> tempdebts = (ArrayList<Debt>) repository.getDebtsToMe();
+
+        firebaseController = FirebaseController.getInstance();
+
+        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), tempdebts);
+        recyclerView.setAdapter(debtAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        repository.setObserver(new DataChangeObserver() {
+            @Override
+            public void dataChanged() {
+                debtAdapter.notifyDataSetChanged();
+            }
+        });
 
 
-            RecyclerView recyclerView = view.findViewById(R.id.debtToOtherFragmentRecycleView);
-
-            ArrayList<Debt> tempdebts = new ArrayList<>();
-
-            firebaseController = FirebaseController.getInstance();
-
-            final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), tempdebts);
-            recyclerView.setAdapter(debtAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-            firebaseController.debtToOthers(new RequestListener() {
-                @Override
-                public void onComplete(Object o) {
-                    List<Debt> debts1 = (List<Debt>) o;
-
-                    debtAdapter.setlist(debts1);
-                }
-
-                @Override
-                public void onError(String msg) {
-                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        }catch (Exception ex)
-        {
-            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
     }
 
 }

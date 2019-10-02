@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.debtsmanager.R;
+import com.example.debtsmanager.controllers.Repository;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,44 +40,39 @@ public class TabsMenuFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
-        try {
+        Repository repository = Repository.getInstance();
 
+        Button myDebts = view.findViewById(R.id.tebsMenuMyDebts);
 
-            Button myDebts = view.findViewById(R.id.tebsMenuMyDebts);
+        myDebts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            myDebts.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtToOtherFragment);
 
-                    Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtToOtherFragment);
+            }
+        });
 
-                }
-            });
+        Button otherDebts = view.findViewById(R.id.tebsMenuOtherDebts);
 
-            Button otherDebts = view.findViewById(R.id.tebsMenuOtherDebts);
+        otherDebts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            otherDebts.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtToMeFragment);
 
-                    Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtToMeFragment);
+            }
+        });
 
-                }
-            });
+        Button addDebts = view.findViewById(R.id.tebsMenuAddDebt);
 
-            Button addDebts = view.findViewById(R.id.tebsMenuAddDebt);
+        addDebts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            addDebts.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtPayFragment);
 
-                    Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtPayFragment);
-
-                }
-            });
-        }catch (Exception ex)
-        {
-            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+            }
+        });
     }
 }

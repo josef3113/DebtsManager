@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.controllers.FirebaseController;
+import com.example.debtsmanager.controllers.Repository;
 import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
 import com.example.debtsmanager.models.User;
@@ -45,44 +47,52 @@ public class DebtPayFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        try {
+        final Repository repository = Repository.getInstance();
 
+        firebaseController = FirebaseController.getInstance();
 
-            firebaseController = FirebaseController.getInstance();
+        Button addDebtBtn = view.findViewById(R.id.addDebtAddDebtBtn);
 
-            Button addDebtBtn = view.findViewById(R.id.addDebtAddDebtBtn);
+        final EditText debtToET = view.findViewById(R.id.addDebtToET);
+        final EditText amountET = view.findViewById(R.id.addDebtAmountET);
 
-            final EditText debtToET = view.findViewById(R.id.addDebtToET);
-            final EditText amountET = view.findViewById(R.id.addDebtAmountET);
+        addDebtBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String toUser = debtToET.getText().toString();
+                final String amount = amountET.getText().toString();
 
-            addDebtBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String toUser = debtToET.getText().toString();
-                    final String amount = amountET.getText().toString();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
+                Bundle bundle = new Bundle();
 
-                    firebaseController.addDebt(toUser, amount, new RequestListener() {
-                        @Override
-                        public void onComplete(Object o) {
-                            debtToET.setText("");
-                            amountET.setText("");
-                            Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-                        }
+                final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                        @Override
-                        public void onError(String msg) {
-                            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                bundle.putInt("animation",R.raw.exchange);
+                lottieAnimation.setArguments(bundle);
 
-                        }
-                    });
-                }
-            });
-        }catch (Exception ex)
-        {
-            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+                lottieAnimation.show(transaction,"lottieDialog");
 
+                Debt newDebt = new Debt(repository.getCurrentUser().getName()
+                        ,toUser
+                        ,Integer.parseInt(amount));
+
+                repository.addDebt(newDebt, new RequestListener() {
+                    @Override
+                    public void onComplete(Object o) {
+                        lottieAnimation.dismiss();
+                        getActivity().onBackPressed();
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        lottieAnimation.dismiss();
+                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
     }
 }
 
