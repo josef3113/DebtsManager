@@ -8,8 +8,7 @@ import com.example.debtsmanager.models.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Repository
-{
+public class Repository {
     private static Repository instance = null;
 
     private List<Debt> debtsToMe;
@@ -18,33 +17,27 @@ public class Repository
     private List<Debt> allDebts;
 
 
-
     private DataChangeObserver observer;
     private User currentUser;
 
-    public User getCurrentUser()
-    {
+    public User getCurrentUser() {
         return currentUser;
     }
 
     FirebaseController firebaseController;
 
-    public static Repository getInstance()
-    {
-        if(instance == null)
-        {
+    public static Repository getInstance() {
+        if (instance == null) {
             instance = new Repository();
         }
         return instance;
     }
 
-    private Repository()
-    {
+    private Repository() {
         firebaseController = FirebaseController.getInstance();
     }
 
-    private void updateData()
-    {
+    private void updateData() {
         debtsToMe = new ArrayList<>();
         debtsToOther = new ArrayList<>();
 
@@ -54,14 +47,12 @@ public class Repository
         updateAllDebts();
     }
 
-    private void updateAllDebts()
-    {
+    private void updateAllDebts() {
         firebaseController.getAllDebts(new RequestListener<List<Debt>>() {
             @Override
             public void onComplete(List<Debt> debts) {
                 allDebts = debts;
-                if(observer != null)
-                {
+                if (observer != null) {
                     observer.dataChanged();
                 }
             }
@@ -73,37 +64,13 @@ public class Repository
         });
     }
 
-    private void updateDebtsToMe()
-    {
-        firebaseController.debtToMe(currentUser,new RequestListener()
-        {
+    private void updateDebtsToMe() {
+        firebaseController.debtToMe(currentUser, new RequestListener() {
             @Override
             public void onComplete(Object o) {
 
                 debtsToMe = (List<Debt>) o;
-                if(observer != null)
-                {
-                    observer.dataChanged();
-                }
-            }
-
-            @Override
-            public void onError(String msg)
-            {
-
-            }
-        });
-    }
-
-
-    public void updateDebtToOther()
-    {
-        firebaseController.debtToOthers(currentUser,new RequestListener() {
-            @Override
-            public void onComplete(Object o) {
-                debtsToOther = (List<Debt>) o;
-                if(observer != null)
-                {
+                if (observer != null) {
                     observer.dataChanged();
                 }
             }
@@ -115,8 +82,25 @@ public class Repository
         });
     }
 
-    public void deleteDebt(Debt debt)
-    {
+
+    public void updateDebtToOther() {
+        firebaseController.debtToOthers(currentUser, new RequestListener() {
+            @Override
+            public void onComplete(Object o) {
+                debtsToOther = (List<Debt>) o;
+                if (observer != null) {
+                    observer.dataChanged();
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+
+            }
+        });
+    }
+
+    public void deleteDebt(Debt debt) {
         firebaseController.deleteDebt(debt, new RequestListener() {
             @Override
             public void onComplete(Object o) {
@@ -130,34 +114,28 @@ public class Repository
         });
     }
 
-    public void addDebt(Debt debt, final RequestListener listener)
-    {
-        if(debt.getFrom().equals(debt.getTo()))
-        {
+
+    public void addDebt(Debt debt, final RequestListener listener) {
+        if (debt.getFrom().equals(debt.getTo())) {
             listener.onError("Can't To Debt To Same User");
         }
 
         final Debt debtToAdd = new Debt();
         Debt tempDebt = null;
-        for(Debt revD: debtsToMe)
-        {
-            if(debt.getFrom().equals(revD.getTo()))
-            {
-                tempDebt = revD;
+
+        for (Debt d : allDebts) {
+            if (debt.getFrom().equals(d.getTo())) {
+                tempDebt = d;
                 break;
             }
         }
-
-        if(tempDebt != null)
-        {
+        if (tempDebt != null) {
             int newAmount = tempDebt.getAmount() - debt.getAmount();
 
-            if (newAmount == 0)
-            {
+            if (newAmount == 0) {
                 firebaseController.deleteDebt(tempDebt, new RequestListener() {
                     @Override
-                    public void onComplete(Object o)
-                    {
+                    public void onComplete(Object o) {
                         listener.onComplete(null);
                     }
 
@@ -173,8 +151,7 @@ public class Repository
             debtToAdd.setFrom(tempDebt.getFrom());
             debtToAdd.setTo(tempDebt.getTo());
 
-            if(newAmount < 0)
-            {
+            if (newAmount < 0) {
                 newAmount = debt.getAmount() - tempDebt.getAmount();
                 debtToAdd.setAmount(newAmount);
                 debtToAdd.setFrom(tempDebt.getTo());
@@ -204,8 +181,7 @@ public class Repository
                     }
                 });
 
-            }else
-            {
+            } else {
                 firebaseController.updateDebt(debtToAdd, new RequestListener() {
                     @Override
                     public void onComplete(Object o) {
@@ -221,21 +197,16 @@ public class Repository
             }
 
 
-
-        }else
-        {
-            for(Debt revD: debtsToOther)
-            {
-                if(debt.equals(revD))
-                {
+        } else {
+            for (Debt revD : allDebts) {
+                if (debt.equals(revD)) {
                     tempDebt = revD;
                     break;
                 }
             }
 
-            if(tempDebt != null)
-            {
-                debt.setAmount(debt.getAmount()+tempDebt.getAmount());
+            if (tempDebt != null) {
+                debt.setAmount(debt.getAmount() + tempDebt.getAmount());
                 firebaseController.updateDebt(debt, new RequestListener() {
                     @Override
                     public void onComplete(Object o) {
@@ -248,8 +219,7 @@ public class Repository
                     }
                 });
 
-            }else
-            {
+            } else {
                 firebaseController.addDebt(debt, new RequestListener() {
                     @Override
                     public void onComplete(Object o) {
@@ -267,8 +237,7 @@ public class Repository
     }
 
 
-    public void login(String email, String password, final RequestListener listener)
-    {
+    public void login(String email, String password, final RequestListener listener) {
         firebaseController.loginUser(email, password, new RequestListener() {
             @Override
             public void onComplete(Object o) {
@@ -287,28 +256,23 @@ public class Repository
     }
 
 
-    private void updateAllUsers()
-    {
-        firebaseController.getAllUsers(new RequestListener<List<User>>()
-        {
+    private void updateAllUsers() {
+        firebaseController.getAllUsers(new RequestListener<List<User>>() {
             @Override
-            public void onComplete(List<User> users)
-            {
+            public void onComplete(List<User> users) {
 
                 allTheUsers = users;
             }
 
             @Override
-            public void onError(String msg)
-            {
+            public void onError(String msg) {
 
             }
         });
 
     }
 
-    public void changeUserType(User user, RequestListener listener)
-    {
+    public void changeUserType(User user, RequestListener listener) {
         user.setIsmanager(!user.isIsmanager());
         firebaseController.updateUser(user, listener);
     }

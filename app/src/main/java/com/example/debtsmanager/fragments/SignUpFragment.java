@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,19 +50,37 @@ public class SignUpFragment extends Fragment {
         final EditText emailET = view.findViewById(R.id.signUpEmailET);
         final EditText passwordET = view.findViewById(R.id.signUpPasswordET);
 
-        submitBtn.setOnClickListener(new View.OnClickListener() {
+
+        submitBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                Bundle bundle = new Bundle();
+
+                final LottieAnimation lottieAnimation = new LottieAnimation();
+
+                bundle.putInt("animation",R.raw.exchange);
+                lottieAnimation.setArguments(bundle);
+
+                lottieAnimation.show(transaction,"lottieDialog");
+
                 User user = new User(emailET.getText().toString(), userNameET.getText().toString(),false);
 
                 firebaseController.signUpUser(user, passwordET.getText().toString(), new RequestListener() {
                     @Override
-                    public void onComplete(Object o) {
+                    public void onComplete(Object o)
+                    {
+                        lottieAnimation.dismiss();
                         getActivity().onBackPressed();
                     }
 
                     @Override
-                    public void onError(String msg) {
+                    public void onError(String msg)
+                    {
+                        lottieAnimation.dismiss();
                         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                     }
                 });
