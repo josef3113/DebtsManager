@@ -35,7 +35,8 @@ public class Debt {
     public Debt() {
     }
 
-    public Debt(String from, String to, int amount) {
+    public Debt(String from, String to, int amount)
+    {
         From = from;
         To = to;
         Amount = amount;
