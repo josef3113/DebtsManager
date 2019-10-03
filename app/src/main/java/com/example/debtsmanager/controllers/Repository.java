@@ -237,22 +237,30 @@ public class Repository {
     }
 
 
-    public void login(String email, String password, final RequestListener listener) {
-        firebaseController.loginUser(email, password, new RequestListener() {
-            @Override
-            public void onComplete(Object o) {
-                currentUser = (User) o;
+    public void login(String email, String password, final RequestListener listener)
+    {
+        if(email.isEmpty() || password.isEmpty())
+        {
+            listener.onError("Email Or Password Is Blank");
+        }
+        else
+        {
+            firebaseController.loginUser(email, password, new RequestListener() {
+                @Override
+                public void onComplete(Object o) {
+                    currentUser = (User) o;
 
-                updateData();
+                    updateData();
 
-                listener.onComplete(null);
-            }
+                    listener.onComplete(null);
+                }
 
-            @Override
-            public void onError(String msg) {
-                listener.onError(msg);
-            }
-        });
+                @Override
+                public void onError(String msg) {
+                    listener.onError(msg);
+                }
+            });
+        }
     }
 
 
