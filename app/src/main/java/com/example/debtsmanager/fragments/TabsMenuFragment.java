@@ -26,8 +26,8 @@ public class TabsMenuFragment extends Fragment
 
 
     public TabsMenuFragment() {
-        // Required empty public constructor
-    }
+    // Required empty public constructor
+}
 
 
     @Override
@@ -71,6 +71,17 @@ public class TabsMenuFragment extends Fragment
             public void onClick(View v) {
 
                 Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_debtPayFragment);
+
+            }
+        });
+
+        Button replaceToManager = view.findViewById(R.id.tebsMenuReplaceManager);
+
+        replaceToManager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_tabMenueManagerFragment);
 
             }
         });
