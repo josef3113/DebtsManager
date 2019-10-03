@@ -2,7 +2,21 @@ package com.example.debtsmanager.models;
 
 import androidx.annotation.NonNull;
 
-public class User {
+public class User
+{
+    private String Email;
+    private String Name;
+    private boolean ismanager;
+
+
+    public boolean isIsmanager() {
+        return ismanager;
+    }
+
+    public void setIsmanager(boolean ismanager) {
+        this.ismanager = ismanager;
+    }
+
     public String getEmail() {
         return Email;
     }
@@ -19,12 +33,10 @@ public class User {
         Name = name;
     }
 
-    private String Email;
-    private String Name;
-
-    public User(String email, String name) {
+    public User(String email, String name, boolean ismanager) {
         Email = email;
         Name = name;
+        this.ismanager = ismanager;
     }
 
     public User() {

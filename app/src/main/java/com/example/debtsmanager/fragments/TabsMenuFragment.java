@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +44,17 @@ public class TabsMenuFragment extends Fragment
         getActivity().setTitle(repository.getCurrentUser().getName());
 
         Button myDebts = view.findViewById(R.id.tebsMenuMyDebts);
+        Button replaceToManager = view.findViewById(R.id.tebsMenuReplaceManager);
+        Button addDebts = view.findViewById(R.id.tebsMenuAddDebt);
+        Button otherDebts = view.findViewById(R.id.tebsMenuOtherDebts);
+
+        if(!repository.getCurrentUser().isIsmanager())
+        {
+            replaceToManager.setVisibility(View.GONE);
+        }else
+        {
+            replaceToManager.setVisibility(View.VISIBLE);
+        }
 
         myDebts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +65,6 @@ public class TabsMenuFragment extends Fragment
             }
         });
 
-        Button otherDebts = view.findViewById(R.id.tebsMenuOtherDebts);
 
         otherDebts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +75,6 @@ public class TabsMenuFragment extends Fragment
             }
         });
 
-        Button addDebts = view.findViewById(R.id.tebsMenuAddDebt);
 
         addDebts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,12 +85,11 @@ public class TabsMenuFragment extends Fragment
             }
         });
 
-        Button replaceToManager = view.findViewById(R.id.tebsMenuReplaceManager);
 
         replaceToManager.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View v)
+            {
                 Navigation.findNavController(view).navigate(R.id.action_tabsMenuFragment_to_tabMenueManagerFragment);
 
             }

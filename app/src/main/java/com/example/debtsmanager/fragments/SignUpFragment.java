@@ -52,7 +52,7 @@ public class SignUpFragment extends Fragment {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = new User(emailET.getText().toString(), userNameET.getText().toString());
+                User user = new User(emailET.getText().toString(), userNameET.getText().toString(),false);
 
                 firebaseController.signUpUser(user, passwordET.getText().toString(), new RequestListener() {
                     @Override
