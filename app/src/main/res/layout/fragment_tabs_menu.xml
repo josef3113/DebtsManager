@@ -76,6 +76,20 @@
         <View
             android:layout_width="0dp"
             android:layout_height="@dimen/spacing_large" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginRight="-4dp"
+            android:background="@drawable/btn_rounded_green_300"
+            android:text="Replace To Manager"
+            android:id="@+id/tebsMenuReplaceManager"
+            android:textAllCaps="false"
+            android:textColor="@color/blue_grey_900" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/spacing_large" />
 
     </LinearLayout>
     </RelativeLayout>
