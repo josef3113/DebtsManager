@@ -307,6 +307,12 @@ public class Repository
 
     }
 
+    public void changeUserType(User user, RequestListener listener)
+    {
+        user.setIsmanager(!user.isIsmanager());
+        firebaseController.updateUser(user, listener);
+    }
+
     public List<Debt> getDebtsToMe() {
         return debtsToMe;
     }

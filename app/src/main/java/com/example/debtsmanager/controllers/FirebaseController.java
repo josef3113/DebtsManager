@@ -315,5 +315,45 @@ public class FirebaseController
                 }
         );
     }
+
+
+    public void updateUser(final User user, final RequestListener requestListener)
+    {
+        db.collection("Users").whereEqualTo("email",user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                if(task.isSuccessful())
+                {
+                    String userId = task.getResult().getDocuments().get(0).getId();
+                    db.collection("Users").document(userId)
+                            .update("ismanager",user.isIsmanager())
+                            .addOnCompleteListener(new OnCompleteListener<Void>()
+                            {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task)
+                                {
+                                    if(task.isSuccessful())
+                                    {
+                                        requestListener.onComplete(null);
+                                    }else
+                                    {
+                                        requestListener.onError(task.getException().getMessage());
+                                    }
+
+                                }
+                            });
+
+                }else
+                {
+                    requestListener.onError(task.getException().getMessage());
+                }
+
+            }
+        });
+
+    }
 }
 

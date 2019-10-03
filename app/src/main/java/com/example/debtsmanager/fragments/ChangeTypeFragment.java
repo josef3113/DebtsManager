@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,15 +15,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.controllers.Repository;
+import com.example.debtsmanager.interfaces.RequestListener;
+import com.example.debtsmanager.models.User;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ChangeTypeFragment extends Fragment
 {
+    User selectedUser;
 
 
     public ChangeTypeFragment()
@@ -47,6 +52,8 @@ public class ChangeTypeFragment extends Fragment
         final Spinner namesSpinner = view.findViewById(R.id.managerChangeTypeSpinner);
         final Button managerChangeTypeBtn = view.findViewById(R.id.managerChangeTypeBtn);
 
+
+
         final ArrayAdapter spinnerAdapter = new ArrayAdapter(getContext()
                 ,R.layout.spinner_item
                 ,repository.getAllTheUsers());
@@ -64,18 +71,56 @@ public class ChangeTypeFragment extends Fragment
                 {
                     managerChangeTypeBtn.setText("Change To Regular User");
 
-
                 }else
                 {
                     managerChangeTypeBtn.setText("Change To Manager");
                 }
-
+                selectedUser = repository.getAllTheUsers().get(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent)
             {
                 managerChangeTypeBtn.setText("Waiting For User");
+            }
+
+
+        });
+
+        managerChangeTypeBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                Bundle bundle = new Bundle();
+
+                final LottieAnimation lottieAnimation = new LottieAnimation();
+
+                bundle.putInt("animation",R.raw.exchange);
+                lottieAnimation.setArguments(bundle);
+
+                lottieAnimation.show(transaction,"lottieDialog");
+
+
+                repository.changeUserType(selectedUser, new RequestListener()
+                {
+                    @Override
+                    public void onComplete(Object o)
+                    {
+                        lottieAnimation.dismiss();
+                        getActivity().onBackPressed();
+                    }
+
+                    @Override
+                    public void onError(String msg)
+                    {
+                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                        lottieAnimation.dismiss();
+                    }
+                });
+
             }
         });
 
