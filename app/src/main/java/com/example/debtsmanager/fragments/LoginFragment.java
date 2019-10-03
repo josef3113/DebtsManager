@@ -53,6 +53,7 @@ public class LoginFragment extends Fragment
 
         final Repository repository = Repository.getInstance();
 
+        getActivity().setTitle("Debt Manager");
 
         firebaseController = FirebaseController.getInstance();
 

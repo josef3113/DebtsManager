@@ -24,10 +24,6 @@
                 android:src="@drawable/logo_small_round"
                 android:tint="@color/green_300" />
 
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/usersNameSpinner"/>
 
             <View
                 android:layout_width="0dp"
@@ -45,17 +41,11 @@
 
 
 
-            <EditText
+            <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="-4dp"
-                android:layout_marginRight="-4dp"
-                android:maxLength="50"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/blue_grey_300"
-                android:id="@+id/addDebtToET"
-                />
+                android:id="@+id/usersNameSpinner" />
+
 
             <View
                 android:layout_width="0dp"

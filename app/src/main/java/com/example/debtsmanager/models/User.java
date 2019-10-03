@@ -1,5 +1,7 @@
 package com.example.debtsmanager.models;
 
+import androidx.annotation.NonNull;
+
 public class User {
     public String getEmail() {
         return Email;
@@ -26,5 +28,11 @@ public class User {
     }
 
     public User() {
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.Name;
     }
 }
