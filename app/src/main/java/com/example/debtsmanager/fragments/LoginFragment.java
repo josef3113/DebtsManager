@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.controllers.FirebaseController;
 import com.example.debtsmanager.controllers.Repository;
-import com.example.debtsmanager.interfaces.DataChangeObserver;
 import com.example.debtsmanager.interfaces.RequestListener;
 
 import androidx.annotation.NonNull;
@@ -29,10 +28,10 @@ import androidx.navigation.Navigation;
 public class LoginFragment extends Fragment
 {
 
-    FirebaseController firebaseController;
+    private FirebaseController firebaseController;
 
-    EditText emailEt;
-    EditText passwordEt;
+    private EditText emailEt;
+    private EditText passwordEt;
 
     public LoginFragment() {
         // Required empty public constructor

@@ -27,7 +27,7 @@ import com.example.debtsmanager.models.User;
  */
 public class ChangeTypeFragment extends Fragment
 {
-    User selectedUser;
+    private User selectedUser;
 
 
     public ChangeTypeFragment()

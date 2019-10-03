@@ -24,7 +24,7 @@ public class Repository {
         return currentUser;
     }
 
-    FirebaseController firebaseController;
+    private final FirebaseController firebaseController;
 
     public static Repository getInstance() {
         if (instance == null) {
@@ -83,7 +83,7 @@ public class Repository {
     }
 
 
-    public void updateDebtToOther() {
+    private void updateDebtToOther() {
         firebaseController.debtToOthers(currentUser, new RequestListener() {
             @Override
             public void onComplete(Object o) {

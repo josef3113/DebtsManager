@@ -18,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.debtsmanager.R;
-import com.example.debtsmanager.controllers.FirebaseController;
 import com.example.debtsmanager.controllers.Repository;
 import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;

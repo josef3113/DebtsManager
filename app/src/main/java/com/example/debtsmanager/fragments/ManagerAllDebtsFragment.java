@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class ManagerAllDebtsFragment extends Fragment implements LongPressReader<Debt>
 {
 
-    Repository repository;
+    private Repository repository;
 
     public ManagerAllDebtsFragment() {
         // Required empty public constructor
@@ -53,7 +53,7 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
 
         RecyclerView managerAllDebts = view.findViewById(R.id.managerAllDebts);
 
-        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), (ArrayList<Debt>) repository.getAllDebts());
+        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter((ArrayList<Debt>) repository.getAllDebts());
 
         managerAllDebts.setAdapter(debtAdapter);
         managerAllDebts.setLayoutManager(new LinearLayoutManager(getContext()));

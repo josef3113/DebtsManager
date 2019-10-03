@@ -5,8 +5,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 
-import com.example.debtsmanager.controllers.Repository;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override

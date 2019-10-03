@@ -22,16 +22,13 @@ import com.example.debtsmanager.controllers.FirebaseController;
 import com.example.debtsmanager.controllers.Repository;
 import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
-import com.example.debtsmanager.models.User;
-
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DebtPayFragment extends Fragment {
 
-    FirebaseController firebaseController;
+    private FirebaseController firebaseController;
 
 
     public DebtPayFragment() {
@@ -66,6 +63,8 @@ public class DebtPayFragment extends Fragment {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         namesSpinner.setAdapter(spinnerAdapter);
+
+
 
         addDebtBtn.setOnClickListener(new View.OnClickListener() {
             @Override

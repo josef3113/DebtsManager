@@ -16,9 +16,9 @@ import com.example.debtsmanager.R;
 public class LottieAnimation extends DialogFragment
 {
 
-    LottieAnimationView animationView;
-    int animationToPlay;
-    TextView animaionText;
+    private LottieAnimationView animationView;
+    private int animationToPlay;
+    private TextView animaionText;
 
     @Override
     public void onCreate(Bundle savedInstanceState)

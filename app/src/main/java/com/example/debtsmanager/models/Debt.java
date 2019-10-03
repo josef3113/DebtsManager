@@ -4,9 +4,9 @@ import androidx.annotation.Nullable;
 
 public class Debt {
 
-    String From;
-    String To;
-    int Amount;
+    private String From;
+    private String To;
+    private int Amount;
 
     public String getFrom() {
         return From;

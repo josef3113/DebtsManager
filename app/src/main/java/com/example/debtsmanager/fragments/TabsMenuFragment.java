@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.controllers.Repository;
@@ -22,8 +21,8 @@ import com.example.debtsmanager.controllers.Repository;
  */
 public class TabsMenuFragment extends Fragment
 {
-    Repository repository;
-    Button replaceToManager;
+    private Repository repository;
+    private Button replaceToManager;
     public TabsMenuFragment() {
     // Required empty public constructor
 }

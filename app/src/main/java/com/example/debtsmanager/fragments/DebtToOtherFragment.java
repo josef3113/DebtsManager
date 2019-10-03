@@ -12,27 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.adapters.DebtToOtherAdapter;
 import com.example.debtsmanager.controllers.FirebaseController;
 import com.example.debtsmanager.controllers.Repository;
 import com.example.debtsmanager.interfaces.DataChangeObserver;
-import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
-import com.example.debtsmanager.models.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DebtToOtherFragment extends Fragment {
 
-    Repository repository;
-    FirebaseController firebaseController;
+    private Repository repository;
+    private FirebaseController firebaseController;
 
     public DebtToOtherFragment()
     {
@@ -58,7 +54,7 @@ public class DebtToOtherFragment extends Fragment {
 
         firebaseController = FirebaseController.getInstance();
 
-        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), (ArrayList<Debt>) repository.getDebtsToOther());
+        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter((ArrayList<Debt>) repository.getDebtsToOther());
         recyclerView.setAdapter(debtAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

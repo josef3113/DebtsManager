@@ -14,19 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.adapters.DebtToOtherAdapter;
-import com.example.debtsmanager.controllers.FirebaseController;
 import com.example.debtsmanager.controllers.Repository;
 import com.example.debtsmanager.interfaces.DataChangeObserver;
 import com.example.debtsmanager.interfaces.LongPressReader;
-import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +30,7 @@ import java.util.List;
 public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
 {
 
-    Repository repository;
+    private Repository repository;
 
     public DebtToMeFragment() {
         // Required empty public constructor
@@ -57,7 +53,7 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
         RecyclerView recyclerView = view.findViewById(R.id.debtToOtherFragmentRecycleView);
 
 
-        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), (ArrayList<Debt>) repository.getDebtsToMe());
+        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter((ArrayList<Debt>) repository.getDebtsToMe());
         recyclerView.setAdapter(debtAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

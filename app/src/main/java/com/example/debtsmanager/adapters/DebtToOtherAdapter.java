@@ -1,6 +1,5 @@
 package com.example.debtsmanager.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,7 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
     private LongPressReader<Debt> pressReader;
 
 
-    public DebtToOtherAdapter(Context context, ArrayList<Debt> list) {
+    public DebtToOtherAdapter(ArrayList<Debt> list) {
 
         this.list = list;
     }
@@ -78,13 +77,13 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
 
     public static class DebtToOtherAdapterHolder extends RecyclerView.ViewHolder {
 
-        ImageView personImage;
-        TextView debtToCellAmount;
-        TextView debtToCellToPerson;
-        TextView debtToCellDate;
-        TextView debtToCellFromUser;
+        final ImageView personImage;
+        final TextView debtToCellAmount;
+        final TextView debtToCellToPerson;
+        final TextView debtToCellDate;
+        final TextView debtToCellFromUser;
 
-        public DebtToOtherAdapterHolder(@NonNull View itemView)
+        DebtToOtherAdapterHolder(@NonNull View itemView)
         {
             super(itemView);
             personImage = itemView.findViewById(R.id.debtToCellPersonImage);

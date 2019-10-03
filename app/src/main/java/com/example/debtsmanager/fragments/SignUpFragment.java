@@ -25,7 +25,7 @@ import com.example.debtsmanager.models.User;
  */
 public class SignUpFragment extends Fragment {
 
-    FirebaseController firebaseController;
+    private FirebaseController firebaseController;
 
     public SignUpFragment() {
         // Required empty public constructor

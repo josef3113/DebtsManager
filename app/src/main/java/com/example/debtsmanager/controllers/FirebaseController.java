@@ -1,7 +1,6 @@
 package com.example.debtsmanager.controllers;
 
 import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
@@ -26,8 +25,8 @@ public class FirebaseController
 {
     private static FirebaseController instance = null;
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    private final FirebaseAuth mAuth;
+    private final FirebaseFirestore db;
 
 
 
