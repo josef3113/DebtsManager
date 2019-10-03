@@ -24,6 +24,11 @@
                 android:src="@drawable/logo_small_round"
                 android:tint="@color/green_300" />
 
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/usersNameSpinner"/>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="@dimen/spacing_xlarge" />
@@ -36,6 +41,9 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/blue_grey_500"
                 android:textStyle="bold" />
+
+
+
 
             <EditText
                 android:layout_width="match_parent"
