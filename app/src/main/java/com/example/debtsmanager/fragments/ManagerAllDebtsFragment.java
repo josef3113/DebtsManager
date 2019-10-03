@@ -1,21 +1,36 @@
 package com.example.debtsmanager.fragments;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.debtsmanager.R;
+import com.example.debtsmanager.adapters.DebtToOtherAdapter;
+import com.example.debtsmanager.controllers.Repository;
+import com.example.debtsmanager.interfaces.DataChangeObserver;
+import com.example.debtsmanager.interfaces.LongPressReader;
+import com.example.debtsmanager.models.Debt;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ManagerAllDebtsFragment extends Fragment {
+public class ManagerAllDebtsFragment extends Fragment implements LongPressReader<Debt>
+{
 
+    Repository repository;
 
     public ManagerAllDebtsFragment() {
         // Required empty public constructor
@@ -24,9 +39,58 @@ public class ManagerAllDebtsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_manager_all_debts, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
+    {
+
+        repository = Repository.getInstance();
+
+        RecyclerView managerAllDebts = view.findViewById(R.id.managerAllDebts);
+
+        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), (ArrayList<Debt>) repository.getAllDebts());
+
+        managerAllDebts.setAdapter(debtAdapter);
+        managerAllDebts.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        debtAdapter.setPressReader(this);
+
+        repository.setObserver(new DataChangeObserver() {
+            @Override
+            public void dataChanged()
+            {
+                debtAdapter.setlist(repository.getAllDebts());
+                debtAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void onClicked(final Debt debt) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setTitle("Are you sure you want to remove this debt?");
+
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                repository.deleteDebt(debt);
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+    }
 }

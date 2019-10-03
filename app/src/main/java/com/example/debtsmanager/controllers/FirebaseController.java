@@ -295,5 +295,25 @@ public class FirebaseController
 
     }
 
+    public void getAllDebts(final RequestListener<List<Debt>> requestListener)
+    {
+        db.collection("Debts").addSnapshotListener(
+                new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e)
+                    {
+                        if(e != null)
+                        {
+                            requestListener.onError(e.getMessage());
+                        }else
+                        {
+                            List<Debt> allDebts = queryDocumentSnapshots.toObjects(Debt.class);
+                            requestListener.onComplete(allDebts);
+
+                        }
+                    }
+                }
+        );
+    }
 }
 
