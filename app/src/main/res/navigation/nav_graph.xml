@@ -66,6 +66,9 @@
         <action
             android:id="@+id/action_tabMenueManagerFragment_to_managerAllDebtsFragment"
             app:destination="@id/managerAllDebtsFragment" />
+        <action
+            android:id="@+id/action_tabMenueManagerFragment_to_changeTypeFragment"
+            app:destination="@id/changeTypeFragment" />
     </fragment>
     <fragment
         android:id="@+id/managerAddDebtFragment"
@@ -77,4 +80,9 @@
         android:name="com.example.debtsmanager.fragments.ManagerAllDebtsFragment"
         android:label="fragment_manager_all_debts"
         tools:layout="@layout/fragment_manager_all_debts" />
+    <fragment
+        android:id="@+id/changeTypeFragment"
+        android:name="com.example.debtsmanager.fragments.ChangeTypeFragment"
+        android:label="fragment_change_type"
+        tools:layout="@layout/fragment_change_type" />
 </navigation>

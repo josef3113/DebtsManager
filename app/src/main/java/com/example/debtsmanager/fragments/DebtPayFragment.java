@@ -59,8 +59,8 @@ public class DebtPayFragment extends Fragment {
 
         final Spinner namesSpinner = view.findViewById(R.id.usersNameSpinner);
         final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getContext()
-                ,R.layout.spinner_item
-                ,repository.getAllTheUsers());
+                , R.layout.spinner_item
+                , repository.getAllTheUsers());
 
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -69,30 +69,27 @@ public class DebtPayFragment extends Fragment {
 
         addDebtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 String toUser = namesSpinner.getSelectedItem().toString();
                 final String amount = amountET.getText().toString();
 
-                if(toUser.equals(repository.getCurrentUser().getName()))
-                {
-                    Toast.makeText(getContext(),"Cant choose yourself",Toast.LENGTH_SHORT).show();
-                }else
-                {
+                if (toUser.equals(repository.getCurrentUser().getName())) {
+                    Toast.makeText(getContext(), "Cant choose yourself", Toast.LENGTH_SHORT).show();
+                } else {
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
                     Bundle bundle = new Bundle();
 
                     final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                    bundle.putInt("animation",R.raw.exchange);
+                    bundle.putInt("animation", R.raw.exchange);
                     lottieAnimation.setArguments(bundle);
 
-                    lottieAnimation.show(transaction,"lottieDialog");
+                    lottieAnimation.show(transaction, "lottieDialog");
 
                     Debt newDebt = new Debt(repository.getCurrentUser().getName()
-                            ,toUser
-                            ,Integer.parseInt(amount));
+                            , toUser
+                            , Integer.parseInt(amount));
 
                     repository.addDebt(newDebt, new RequestListener() {
                         @Override

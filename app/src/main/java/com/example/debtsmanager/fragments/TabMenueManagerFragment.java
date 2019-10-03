@@ -39,6 +39,9 @@ public class TabMenueManagerFragment extends Fragment {
     {
 
         Button managerAddDebt = view.findViewById(R.id.tebsMenuManagerAddDebt);
+        Button managerAllDebts = view.findViewById(R.id.tebsMenuMAnagerAllDebts);
+        Button changeType = view.findViewById(R.id.tabsMenuManagerChangeType);
+
 
         managerAddDebt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +52,6 @@ public class TabMenueManagerFragment extends Fragment {
             }
         });
 
-        Button managerAllDebts = view.findViewById(R.id.tebsMenuMAnagerAllDebts);
 
         managerAllDebts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,5 +62,12 @@ public class TabMenueManagerFragment extends Fragment {
             }
         });
 
+
+        changeType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_tabMenueManagerFragment_to_changeTypeFragment);
+            }
+        });
     }
 }

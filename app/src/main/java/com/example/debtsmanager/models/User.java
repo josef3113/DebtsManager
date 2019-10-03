@@ -25,6 +25,7 @@ public class User
         Email = email;
     }
 
+
     public String getName() {
         return Name;
     }
