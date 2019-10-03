@@ -11,8 +11,10 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.debtsmanager.R;
@@ -44,23 +46,37 @@ public class ManagerAddDebtFragment extends Fragment {
 
         final Repository repository = Repository.getInstance();
 
-        Button managerAddDebtBtn = view.findViewById(R.id.managerAddDebtAddDebtBtn);
 
-        final EditText debtFromET = view.findViewById(R.id.managerAddDebtFromET);
-        final EditText debtToET = view.findViewById(R.id.managerAddDebtToET);
+        final Spinner namesFromSpinner = view.findViewById(R.id.managerAddDebtFromSpinner);
+        final Spinner namesToSpinner = view.findViewById(R.id.managerAddDebtToSpinner);
+
+        final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getContext()
+                , R.layout.spinner_item
+                , repository.getAllTheUsers());
+
+
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        namesFromSpinner.setAdapter(spinnerAdapter);
+        namesToSpinner.setAdapter(spinnerAdapter);
+
+
         final EditText amountET = view.findViewById(R.id.managerAddDebtAmountET);
+
+
+        Button managerAddDebtBtn = view.findViewById(R.id.managerAddDebtAddDebtBtn);
 
         managerAddDebtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fromUser = debtFromET.getText().toString();
-                String toUser = debtToET.getText().toString();
+                String fromUser = namesFromSpinner.getSelectedItem().toString();
+                String toUser = namesToSpinner.getSelectedItem().toString();
                 String amount = amountET.getText().toString();
 
                 Debt newDebt = new Debt(
                         fromUser
-                        ,toUser
-                        ,Integer.parseInt(amount));
+                        , toUser
+                        , Integer.parseInt(amount));
 
 
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -69,10 +85,10 @@ public class ManagerAddDebtFragment extends Fragment {
 
                 final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                bundle.putInt("animation",R.raw.exchange);
+                bundle.putInt("animation", R.raw.exchange);
                 lottieAnimation.setArguments(bundle);
 
-                lottieAnimation.show(transaction,"lottieDialog");
+                lottieAnimation.show(transaction, "lottieDialog");
 
                 repository.addDebt(newDebt, new RequestListener() {
                     @Override
@@ -87,6 +103,7 @@ public class ManagerAddDebtFragment extends Fragment {
                         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                     }
                 });
+
 
             }
         });

@@ -74,11 +74,7 @@ public class DebtPayFragment extends Fragment {
                 String toUser = namesSpinner.getSelectedItem().toString();
                 final String amount = amountET.getText().toString();
 
-                if(toUser.equals(repository.getCurrentUser().getName()))
-                {
-                    Toast.makeText(getContext(),"Cant choose yourself",Toast.LENGTH_SHORT).show();
-                }else
-                {
+
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
                     Bundle bundle = new Bundle();
@@ -109,7 +105,7 @@ public class DebtPayFragment extends Fragment {
                     });
                 }
 
-            }
+
         });
     }
 }

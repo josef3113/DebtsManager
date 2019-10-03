@@ -130,6 +130,11 @@ public class Repository
 
     public void addDebt(Debt debt, final RequestListener listener)
     {
+        if(debt.getFrom().equals(debt.getTo()))
+        {
+            listener.onError("Can't To Debt To Same User");
+        }
+
         final Debt debtToAdd = new Debt();
         Debt tempDebt = null;
         for(Debt revD: debtsToMe)
