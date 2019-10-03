@@ -45,7 +45,7 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
 
         holder.debtToCellAmount.setText(debt.getAmount()+"");
         holder.debtToCellToPerson.setText(debt.getFrom());
-
+        holder.debtToCellFromUser.setText(debt.getTo());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v)
@@ -82,7 +82,7 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
         TextView debtToCellAmount;
         TextView debtToCellToPerson;
         TextView debtToCellDate;
-
+        TextView debtToCellFromUser;
 
         public DebtToOtherAdapterHolder(@NonNull View itemView)
         {
@@ -91,6 +91,7 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
             debtToCellAmount = itemView.findViewById(R.id.debtToCellAmount);
             debtToCellToPerson = itemView.findViewById(R.id.debtToCellToPerson);
             debtToCellDate = itemView.findViewById(R.id.debtToCellDate);
+            debtToCellFromUser = itemView.findViewById(R.id.debtToCellFromUser);
         }
 
 
