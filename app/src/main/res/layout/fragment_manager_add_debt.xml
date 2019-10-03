@@ -53,7 +53,7 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="@color/blue_grey_300"
-                android:id="@+id/ManagerAddDebtFromET"
+                android:id="@+id/managerAddDebtFromET"
                 />
 
             <View
@@ -78,7 +78,7 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="@color/blue_grey_300"
-                android:id="@+id/ManagerAddDebtToET"
+                android:id="@+id/managerAddDebtToET"
                 />
 
             <View
@@ -125,7 +125,7 @@
                 android:text="Add Debt"
                 android:textAllCaps="false"
                 android:textColor="@color/blue_grey_900"
-                android:id="@+id/addDebtAddDebtBtn"
+                android:id="@+id/managerAddDebtAddDebtBtn"
                 />
 
 
