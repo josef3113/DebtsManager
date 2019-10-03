@@ -274,27 +274,46 @@ public class FirebaseController
 
     }
 
-    public void getAllUsers(final RequestListener requestListener)
+    public void getAllUsers(final RequestListener<List<User>> requestListener)
     {
-        db.collection("Users").get().
-                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        db.collection("Users").addSnapshotListener(new EventListener<QuerySnapshot>()
+        {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e)
+            {
+                if(e != null)
                 {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task)
-                    {
-                        if(task.isSuccessful())
-                        {
-                            List<User> users = task.getResult().toObjects(User.class);
+                    requestListener.onError(e.getMessage());
+                }else
+                {
+                    List<User> users = queryDocumentSnapshots.toObjects(User.class);
+                    requestListener.onComplete(users);
+                }
 
-                            requestListener.onComplete(users);
-                        }else
-                        {
-                            requestListener.onError(task.getException().getMessage());
-                        }
+            }
+        });
 
-                    }
-                });
     }
 
+    public void getAllDebts(final RequestListener<List<Debt>> requestListener)
+    {
+        db.collection("Debts").addSnapshotListener(
+                new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e)
+                    {
+                        if(e != null)
+                        {
+                            requestListener.onError(e.getMessage());
+                        }else
+                        {
+                            List<Debt> allDebts = queryDocumentSnapshots.toObjects(Debt.class);
+                            requestListener.onComplete(allDebts);
+
+                        }
+                    }
+                }
+        );
+    }
 }
 

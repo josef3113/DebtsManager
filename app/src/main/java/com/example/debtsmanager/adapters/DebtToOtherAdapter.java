@@ -50,7 +50,10 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
             @Override
             public boolean onLongClick(View v)
             {
-                pressReader.onClicked(debt);
+                if(pressReader != null)
+                {
+                    pressReader.onClicked(debt);
+                }
                 return true;
             }
         });

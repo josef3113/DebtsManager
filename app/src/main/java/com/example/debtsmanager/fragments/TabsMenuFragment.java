@@ -42,6 +42,8 @@ public class TabsMenuFragment extends Fragment
 
         Repository repository = Repository.getInstance();
 
+        getActivity().setTitle(repository.getCurrentUser().getName());
+
         Button myDebts = view.findViewById(R.id.tebsMenuMyDebts);
 
         myDebts.setOnClickListener(new View.OnClickListener() {

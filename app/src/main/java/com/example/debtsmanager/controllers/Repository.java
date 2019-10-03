@@ -15,6 +15,7 @@ public class Repository
     private List<Debt> debtsToMe;
     private List<Debt> debtsToOther;
     private List<User> allTheUsers;
+    private List<Debt> allDebts;
 
     private DataChangeObserver observer;
     private User currentUser;
@@ -38,7 +39,6 @@ public class Repository
     private Repository()
     {
         firebaseController = FirebaseController.getInstance();
-
     }
 
     private void updateData()
@@ -48,6 +48,27 @@ public class Repository
 
         updateDebtsToMe();
         updateDebtToOther();
+        updateAllUsers();
+        updateAllDebts();
+    }
+
+    private void updateAllDebts()
+    {
+        firebaseController.getAllDebts(new RequestListener<List<Debt>>() {
+            @Override
+            public void onComplete(List<Debt> debts) {
+                allDebts = debts;
+                if(observer != null)
+                {
+                    observer.dataChanged();
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+
+            }
+        });
     }
 
     private void updateDebtsToMe()
@@ -258,6 +279,27 @@ public class Repository
         });
     }
 
+
+    private void updateAllUsers()
+    {
+        firebaseController.getAllUsers(new RequestListener<List<User>>()
+        {
+            @Override
+            public void onComplete(List<User> users)
+            {
+
+                allTheUsers = users;
+            }
+
+            @Override
+            public void onError(String msg)
+            {
+
+            }
+        });
+
+    }
+
     public List<Debt> getDebtsToMe() {
         return debtsToMe;
     }
@@ -268,5 +310,13 @@ public class Repository
 
     public void setObserver(DataChangeObserver observer) {
         this.observer = observer;
+    }
+
+    public List<User> getAllTheUsers() {
+        return allTheUsers;
+    }
+
+    public List<Debt> getAllDebts() {
+        return allDebts;
     }
 }

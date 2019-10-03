@@ -11,8 +11,10 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.debtsmanager.R;
@@ -53,43 +55,59 @@ public class DebtPayFragment extends Fragment {
 
         Button addDebtBtn = view.findViewById(R.id.addDebtAddDebtBtn);
 
-        final EditText debtToET = view.findViewById(R.id.addDebtToET);
         final EditText amountET = view.findViewById(R.id.addDebtAmountET);
+
+        final Spinner namesSpinner = view.findViewById(R.id.usersNameSpinner);
+        final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getContext()
+                ,R.layout.spinner_item
+                ,repository.getAllTheUsers());
+
+
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        namesSpinner.setAdapter(spinnerAdapter);
 
         addDebtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String toUser = debtToET.getText().toString();
+            public void onClick(View v)
+            {
+                String toUser = namesSpinner.getSelectedItem().toString();
                 final String amount = amountET.getText().toString();
 
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                if(toUser.equals(repository.getCurrentUser().getName()))
+                {
+                    Toast.makeText(getContext(),"Cant choose yourself",Toast.LENGTH_SHORT).show();
+                }else
+                {
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                Bundle bundle = new Bundle();
+                    Bundle bundle = new Bundle();
 
-                final LottieAnimation lottieAnimation = new LottieAnimation();
+                    final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                bundle.putInt("animation",R.raw.exchange);
-                lottieAnimation.setArguments(bundle);
+                    bundle.putInt("animation",R.raw.exchange);
+                    lottieAnimation.setArguments(bundle);
 
-                lottieAnimation.show(transaction,"lottieDialog");
+                    lottieAnimation.show(transaction,"lottieDialog");
 
-                Debt newDebt = new Debt(repository.getCurrentUser().getName()
-                        ,toUser
-                        ,Integer.parseInt(amount));
+                    Debt newDebt = new Debt(repository.getCurrentUser().getName()
+                            ,toUser
+                            ,Integer.parseInt(amount));
 
-                repository.addDebt(newDebt, new RequestListener() {
-                    @Override
-                    public void onComplete(Object o) {
-                        lottieAnimation.dismiss();
-                        getActivity().onBackPressed();
-                    }
+                    repository.addDebt(newDebt, new RequestListener() {
+                        @Override
+                        public void onComplete(Object o) {
+                            lottieAnimation.dismiss();
+                            getActivity().onBackPressed();
+                        }
 
-                    @Override
-                    public void onError(String msg) {
-                        lottieAnimation.dismiss();
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onError(String msg) {
+                            lottieAnimation.dismiss();
+                            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 
             }
         });
