@@ -274,5 +274,27 @@ public class FirebaseController
 
     }
 
+    public void getAllUsers(final RequestListener requestListener)
+    {
+        db.collection("Users").get().
+                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if(task.isSuccessful())
+                        {
+                            List<User> users = task.getResult().toObjects(User.class);
+
+                            requestListener.onComplete(users);
+                        }else
+                        {
+                            requestListener.onError(task.getException().getMessage());
+                        }
+
+                    }
+                });
+    }
+
 }
 

@@ -14,6 +14,8 @@ public class Repository
 
     private List<Debt> debtsToMe;
     private List<Debt> debtsToOther;
+    private List<User> allTheUsers;
+
     private DataChangeObserver observer;
     private User currentUser;
 
@@ -71,7 +73,6 @@ public class Repository
     }
 
 
-
     public void updateDebtToOther()
     {
         firebaseController.debtToOthers(currentUser,new RequestListener() {
@@ -91,6 +92,20 @@ public class Repository
         });
     }
 
+    public void deleteDebt(Debt debt)
+    {
+        firebaseController.deleteDebt(debt, new RequestListener() {
+            @Override
+            public void onComplete(Object o) {
+
+            }
+
+            @Override
+            public void onError(String msg) {
+
+            }
+        });
+    }
 
     public void addDebt(Debt debt, final RequestListener listener)
     {

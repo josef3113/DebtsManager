@@ -11,14 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.debtsmanager.R;
+import com.example.debtsmanager.interfaces.LongPressReader;
 import com.example.debtsmanager.models.Debt;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.DebtToOtherAdapterHolder> {
+public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.DebtToOtherAdapterHolder>
+{
 
     private List<Debt> list;
+    private LongPressReader<Debt> pressReader;
 
 
     public DebtToOtherAdapter(Context context, ArrayList<Debt> list) {
@@ -38,11 +41,19 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
     @Override
     public void onBindViewHolder(@NonNull final DebtToOtherAdapter.DebtToOtherAdapterHolder holder, int position) {
 
-        Debt debt = list.get(position);
+        final Debt debt = list.get(position);
 
         holder.debtToCellAmount.setText(debt.getAmount()+"");
         holder.debtToCellToPerson.setText(debt.getFrom());
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v)
+            {
+                pressReader.onClicked(debt);
+                return true;
+            }
+        });
 
     }
 
@@ -56,6 +67,10 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
     public void setlist(List<Debt> list) {
         this.list = list;
         this.notifyDataSetChanged();
+    }
+
+    public void setPressReader(LongPressReader<Debt> pressReader) {
+        this.pressReader = pressReader;
     }
 
     public static class DebtToOtherAdapterHolder extends RecyclerView.ViewHolder {

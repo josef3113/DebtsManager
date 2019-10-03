@@ -1,10 +1,12 @@
 package com.example.debtsmanager.fragments;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +21,7 @@ import com.example.debtsmanager.adapters.DebtToOtherAdapter;
 import com.example.debtsmanager.controllers.FirebaseController;
 import com.example.debtsmanager.controllers.Repository;
 import com.example.debtsmanager.interfaces.DataChangeObserver;
+import com.example.debtsmanager.interfaces.LongPressReader;
 import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
 
@@ -28,11 +31,10 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DebtToMeFragment extends Fragment
+public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
 {
 
     Repository repository;
-    FirebaseController firebaseController;
 
     public DebtToMeFragment() {
         // Required empty public constructor
@@ -49,14 +51,11 @@ public class DebtToMeFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
-        //Repository repository = Repository.getInstance();
 
         repository = Repository.getInstance();
 
         RecyclerView recyclerView = view.findViewById(R.id.debtToOtherFragmentRecycleView);
 
-
-        firebaseController = FirebaseController.getInstance();
 
         final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter(getContext(), (ArrayList<Debt>) repository.getDebtsToMe());
         recyclerView.setAdapter(debtAdapter);
@@ -71,7 +70,32 @@ public class DebtToMeFragment extends Fragment
             }
         });
 
+        debtAdapter.setPressReader(this);
 
     }
 
+    @Override
+    public void onClicked(final Debt debt)
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setTitle("Are you sure you want to remove this debt?");
+
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                repository.deleteDebt(debt);
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+    }
 }
