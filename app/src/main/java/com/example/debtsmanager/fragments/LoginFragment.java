@@ -82,6 +82,7 @@ public class LoginFragment extends Fragment
 
                 final LottieAnimation lottieAnimation = new LottieAnimation();
 
+                //bundle.putString("text","Login!!!");
                 bundle.putInt("animation",R.raw.loading2);
                 lottieAnimation.setArguments(bundle);
 
