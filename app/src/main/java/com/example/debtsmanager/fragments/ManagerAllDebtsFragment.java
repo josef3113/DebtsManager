@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.adapters.DebtToOtherAdapter;
@@ -31,6 +33,7 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
 {
 
     private Repository repository;
+    private RecyclerView managerAllDebts;
 
     public ManagerAllDebtsFragment() {
         // Required empty public constructor
@@ -51,7 +54,7 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
 
         repository = Repository.getInstance();
 
-        RecyclerView managerAllDebts = view.findViewById(R.id.managerAllDebts);
+        managerAllDebts = view.findViewById(R.id.managerAllDebts);
 
         final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter((ArrayList<Debt>) repository.getAllDebts());
 
@@ -78,6 +81,13 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                Animation animationFade = AnimationUtils.loadAnimation(getContext(),R.anim.fade);
+                managerAllDebts.getChildAt(repository.getAllDebts().indexOf(debt))
+                        .startAnimation(animationFade);
+
+                for(int i =0 ; i<10000000;i++);
+
                 repository.deleteDebt(debt);
             }
         });

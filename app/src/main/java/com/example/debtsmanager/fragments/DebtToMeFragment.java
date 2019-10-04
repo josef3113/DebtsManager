@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.adapters.DebtToOtherAdapter;
@@ -31,6 +33,7 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
 {
 
     private Repository repository;
+    private RecyclerView recyclerView;
 
     public DebtToMeFragment() {
         // Required empty public constructor
@@ -50,7 +53,7 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
 
         repository = Repository.getInstance();
 
-        RecyclerView recyclerView = view.findViewById(R.id.debtToOtherFragmentRecycleView);
+        recyclerView = view.findViewById(R.id.debtToOtherFragmentRecycleView);
 
 
         final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter((ArrayList<Debt>) repository.getDebtsToMe());
@@ -66,6 +69,7 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
             }
         });
 
+
         debtAdapter.setPressReader(this);
 
     }
@@ -76,9 +80,15 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle("Are you sure you want to remove this debt?");
 
+
+
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                Animation animationFade = AnimationUtils.loadAnimation(getContext(),R.anim.fade);
+                recyclerView.getChildAt(repository.getDebtsToMe().indexOf(debt))
+                        .startAnimation(animationFade);
 
                 repository.deleteDebt(debt);
             }
