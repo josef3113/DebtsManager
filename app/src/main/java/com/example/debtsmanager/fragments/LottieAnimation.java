@@ -2,10 +2,14 @@ package com.example.debtsmanager.fragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
@@ -19,6 +23,7 @@ public class LottieAnimation extends DialogFragment
     private LottieAnimationView animationView;
     private int animationToPlay;
     private TextView animaionText;
+    private ImageView image;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -35,6 +40,11 @@ public class LottieAnimation extends DialogFragment
 
         animationView = view.findViewById(R.id.lottie_Animation);
         animaionText = view.findViewById(R.id.lottie_text);
+        image = view.findViewById(R.id.lottieImage);
+
+        Animation animationBlink = AnimationUtils.loadAnimation(getContext(),R.anim.blink);
+
+        image.startAnimation(animationBlink);
 
 
         animationToPlay = getArguments().getInt("animation");
