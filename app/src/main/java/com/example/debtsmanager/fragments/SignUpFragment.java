@@ -62,7 +62,7 @@ public class SignUpFragment extends Fragment {
 
                 final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                bundle.putInt("animation",R.raw.exchange);
+                bundle.putString("text","Signing Up");
                 lottieAnimation.setArguments(bundle);
 
                 lottieAnimation.show(transaction,"lottieDialog");

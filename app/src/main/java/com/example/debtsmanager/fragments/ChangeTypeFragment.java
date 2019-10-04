@@ -98,7 +98,7 @@ public class ChangeTypeFragment extends Fragment
 
                 final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                bundle.putInt("animation",R.raw.exchange);
+                bundle.putString("text","Change Type");
                 lottieAnimation.setArguments(bundle);
 
                 lottieAnimation.show(transaction,"lottieDialog");

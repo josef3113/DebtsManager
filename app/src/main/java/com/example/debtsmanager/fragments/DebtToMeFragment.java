@@ -73,12 +73,13 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
     @Override
     public void onClicked(final Debt debt)
     {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle("Are you sure you want to remove this debt?");
 
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 repository.deleteDebt(debt);
             }
         });
