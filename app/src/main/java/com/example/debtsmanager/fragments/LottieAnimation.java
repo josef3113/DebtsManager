@@ -19,9 +19,6 @@ import com.example.debtsmanager.R;
 
 public class LottieAnimation extends DialogFragment
 {
-
-    private LottieAnimationView animationView;
-    private int animationToPlay;
     private TextView animaionText;
     private ImageView image;
 
@@ -38,7 +35,6 @@ public class LottieAnimation extends DialogFragment
 
         view = inflater.inflate(R.layout.lottie_animation_fragment,container,false);
 
-        animationView = view.findViewById(R.id.lottie_Animation);
         animaionText = view.findViewById(R.id.lottie_text);
         image = view.findViewById(R.id.lottieImage);
 
@@ -46,8 +42,6 @@ public class LottieAnimation extends DialogFragment
 
         image.startAnimation(animationBlink);
 
-
-        animationToPlay = getArguments().getInt("animation");
 
         String string;
 
@@ -65,10 +59,6 @@ public class LottieAnimation extends DialogFragment
 
         this.setCancelable(false);
 
-        animationView.setAnimation(animationToPlay);
-
-        animationView.playAnimation();
-
         return view;
     }
 
@@ -76,7 +66,6 @@ public class LottieAnimation extends DialogFragment
     @Override
     public void onStop()
     {
-        animationView.cancelAnimation();
         super.onStop();
     }
 }

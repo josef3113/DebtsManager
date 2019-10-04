@@ -80,7 +80,7 @@ public class DebtPayFragment extends Fragment {
 
                     final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                    bundle.putInt("animation",R.raw.exchange);
+                    bundle.putString("text","Transferring Debt");
                     lottieAnimation.setArguments(bundle);
 
                     lottieAnimation.show(transaction,"lottieDialog");

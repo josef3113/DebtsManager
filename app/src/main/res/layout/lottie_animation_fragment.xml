@@ -14,28 +14,19 @@
         android:textSize="20sp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Testing"
-        android:layout_weight="1"
+        android:text="Loading"
         />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:src="@drawable/logo_small_round"
         android:id="@+id/lottieImage"
         android:tint="@color/green_300"
-        android:layout_weight="3"
         />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lottie_Animation"
-        android:layout_gravity="center"
-        app:lottie_loop="true"
-        android:layout_weight="1"
-        />
+
 
 </LinearLayout>
