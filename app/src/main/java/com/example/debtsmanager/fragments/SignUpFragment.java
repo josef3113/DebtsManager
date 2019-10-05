@@ -51,36 +51,33 @@ public class SignUpFragment extends Fragment {
         final EditText passwordET = view.findViewById(R.id.signUpPasswordET);
 
 
-        submitBtn.setOnClickListener(new View.OnClickListener()
-        {
+        submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
                 Bundle bundle = new Bundle();
 
                 final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                bundle.putString("text","Signing Up");
+                bundle.putString("text", "Signing Up");
                 lottieAnimation.setArguments(bundle);
 
-                lottieAnimation.show(transaction,"lottieDialog");
+                lottieAnimation.show(transaction, "lottieDialog");
 
-                User user = new User(emailET.getText().toString(), userNameET.getText().toString(),false);
+                User user = new User(emailET.getText().toString(), userNameET.getText().toString(), false);
+
 
                 firebaseController.signUpUser(user, passwordET.getText().toString(), new RequestListener() {
                     @Override
-                    public void onComplete(Object o)
-                    {
+                    public void onComplete(Object o) {
                         Toast.makeText(getContext(), "Signed Up", Toast.LENGTH_SHORT).show();
                         lottieAnimation.dismiss();
                         getActivity().onBackPressed();
                     }
 
                     @Override
-                    public void onError(String msg)
-                    {
+                    public void onError(String msg) {
                         lottieAnimation.dismiss();
                         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                     }

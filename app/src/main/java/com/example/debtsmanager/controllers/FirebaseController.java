@@ -82,6 +82,23 @@ public class FirebaseController
 
     public void signUpUser(final User user, final String password, final RequestListener requestListener)
     {
+        if(user.getName().isEmpty())
+        {
+            requestListener.onError("User Name Can't Be Empty");
+            return;
+        }
+
+        if( user.getEmail().isEmpty() )
+        {
+            requestListener.onError("Email Can't Be Empty");
+            return;
+        }
+
+        if( password.isEmpty())
+        {
+            requestListener.onError("Password Can't Be Empty");
+            return;
+        }
 
        db.collection("Users")
                .whereEqualTo("name", user.getName())

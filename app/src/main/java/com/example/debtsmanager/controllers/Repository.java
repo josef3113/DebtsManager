@@ -100,16 +100,16 @@ public class Repository {
         });
     }
 
-    public void deleteDebt(Debt debt) {
+    public void deleteDebt(Debt debt, final RequestListener listener) {
         firebaseController.deleteDebt(debt, new RequestListener() {
             @Override
             public void onComplete(Object o) {
-
+                listener.onComplete(null);
             }
 
             @Override
             public void onError(String msg) {
-
+                listener.onError("Was Error:" + msg);
             }
         });
     }
@@ -120,8 +120,7 @@ public class Repository {
             listener.onError("Can't To Debt To Same User");
             return;
         }
-        if(debt.getAmount() == 0)
-        {
+        if (debt.getAmount() == 0) {
             listener.onError("Can't Amount Be Zero");
             return;
         }
@@ -175,7 +174,8 @@ public class Repository {
 
                             @Override
                             public void onError(String msg) {
-                                listener.onError("Was Error:" + msg);                            }
+                                listener.onError("Was Error:" + msg);
+                            }
                         });
 
                     }
@@ -183,7 +183,8 @@ public class Repository {
                     @Override
                     public void onError(String msg) {
 
-                        listener.onError("Was Error:" + msg);                    }
+                        listener.onError("Was Error:" + msg);
+                    }
                 });
 
             } else {
@@ -196,7 +197,8 @@ public class Repository {
                     @Override
                     public void onError(String msg) {
 
-                        listener.onError("Was Error:" + msg);                    }
+                        listener.onError("Was Error:" + msg);
+                    }
                 });
 
             }
@@ -221,7 +223,8 @@ public class Repository {
                     @Override
                     public void onError(String msg) {
 
-                        listener.onError("Was Error:" + msg);                    }
+                        listener.onError("Was Error:" + msg);
+                    }
                 });
 
             } else {
@@ -232,8 +235,7 @@ public class Repository {
                     }
 
                     @Override
-                    public void onError(String msg)
-                    {
+                    public void onError(String msg) {
                         listener.onError("Was Error:" + msg);
                     }
                 });
@@ -243,14 +245,10 @@ public class Repository {
     }
 
 
-    public void login(String email, String password, final RequestListener listener)
-    {
-        if(email.isEmpty() || password.isEmpty())
-        {
+    public void login(String email, String password, final RequestListener listener) {
+        if (email.isEmpty() || password.isEmpty()) {
             listener.onError("Email Or Password Is Blank");
-        }
-        else
-        {
+        } else {
             firebaseController.loginUser(email, password, new RequestListener() {
                 @Override
                 public void onComplete(Object o) {
@@ -264,7 +262,8 @@ public class Repository {
                 @Override
                 public void onError(String msg) {
 
-                    listener.onError("Was Error:" + msg);                }
+                    listener.onError("Was Error:" + msg);
+                }
             });
         }
     }

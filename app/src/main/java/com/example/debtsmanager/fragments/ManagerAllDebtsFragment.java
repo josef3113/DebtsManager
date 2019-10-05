@@ -16,12 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.example.debtsmanager.R;
 import com.example.debtsmanager.adapters.DebtToOtherAdapter;
 import com.example.debtsmanager.controllers.Repository;
 import com.example.debtsmanager.interfaces.DataChangeObserver;
 import com.example.debtsmanager.interfaces.LongPressReader;
+import com.example.debtsmanager.interfaces.RequestListener;
 import com.example.debtsmanager.models.Debt;
 
 import java.util.ArrayList;
@@ -89,7 +91,17 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
                 dialog.dismiss();
                 for(int i = 0 ; i<10000000;i++);
 
-                repository.deleteDebt(debt);
+                repository.deleteDebt(debt, new RequestListener() {
+                    @Override
+                    public void onComplete(Object o) {
+                        Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
