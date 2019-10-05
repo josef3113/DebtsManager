@@ -89,7 +89,9 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
                 Animation animationFade = AnimationUtils.loadAnimation(getContext(),R.anim.fade);
                 recyclerView.getChildAt(repository.getDebtsToMe().indexOf(debt))
                         .startAnimation(animationFade);
-
+                
+                dialog.dismiss();
+                for(int i = 0 ; i<1000000000;i++);
                 repository.deleteDebt(debt);
             }
         });

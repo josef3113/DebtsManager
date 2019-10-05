@@ -86,7 +86,8 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
                 managerAllDebts.getChildAt(repository.getAllDebts().indexOf(debt))
                         .startAnimation(animationFade);
 
-                for(int i =0 ; i<10000000;i++);
+                dialog.dismiss();
+                for(int i = 0 ; i<1000000000;i++);
 
                 repository.deleteDebt(debt);
             }
