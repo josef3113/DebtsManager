@@ -88,6 +88,7 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt> 
                 dialog.dismiss();
                 for (int i = 0; i < 10000000; i++) ;
                 repository.deleteDebt(debt);
+
             }
         });
 

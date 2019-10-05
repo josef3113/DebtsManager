@@ -22,7 +22,6 @@ import com.example.debtsmanager.controllers.Repository;
 public class TabsMenuFragment extends Fragment
 {
     private Repository repository;
-    private Button replaceToManager;
     public TabsMenuFragment() {
     // Required empty public constructor
 }
@@ -43,7 +42,7 @@ public class TabsMenuFragment extends Fragment
         getActivity().setTitle(repository.getCurrentUser().getName());
 
         Button myDebts = view.findViewById(R.id.tebsMenuMyDebts);
-        replaceToManager = view.findViewById(R.id.tebsMenuReplaceManager);
+        Button replaceToManager = view.findViewById(R.id.tebsMenuReplaceManager);
         Button addDebts = view.findViewById(R.id.tebsMenuAddDebt);
         Button otherDebts = view.findViewById(R.id.tebsMenuOtherDebts);
 

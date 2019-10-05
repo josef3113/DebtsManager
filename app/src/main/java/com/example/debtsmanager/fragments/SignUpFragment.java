@@ -73,6 +73,7 @@ public class SignUpFragment extends Fragment {
                     @Override
                     public void onComplete(Object o)
                     {
+                        Toast.makeText(getContext(), "Signed Up", Toast.LENGTH_SHORT).show();
                         lottieAnimation.dismiss();
                         getActivity().onBackPressed();
                     }
