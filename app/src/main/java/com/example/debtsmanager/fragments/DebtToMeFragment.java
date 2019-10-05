@@ -29,8 +29,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
-{
+public class DebtToMeFragment extends Fragment implements LongPressReader<Debt> {
 
     private Repository repository;
     private RecyclerView recyclerView;
@@ -48,8 +47,7 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         repository = Repository.getInstance();
 
@@ -62,8 +60,7 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
 
         repository.setObserver(new DataChangeObserver() {
             @Override
-            public void dataChanged()
-            {
+            public void dataChanged() {
                 debtAdapter.setlist(repository.getDebtsToMe());
                 debtAdapter.notifyDataSetChanged();
             }
@@ -75,23 +72,21 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt>
     }
 
     @Override
-    public void onClicked(final Debt debt)
-    {
+    public void onClicked(final Debt debt) {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle("Are you sure you want to remove this debt?");
-
 
 
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Animation animationFade = AnimationUtils.loadAnimation(getContext(),R.anim.fade);
+                Animation animationFade = AnimationUtils.loadAnimation(getContext(), R.anim.fade);
                 recyclerView.getChildAt(repository.getDebtsToMe().indexOf(debt))
                         .startAnimation(animationFade);
-                
+
                 dialog.dismiss();
-                for(int i = 0 ; i<1000000000;i++);
+                for (int i = 0; i < 10000000; i++) ;
                 repository.deleteDebt(debt);
             }
         });

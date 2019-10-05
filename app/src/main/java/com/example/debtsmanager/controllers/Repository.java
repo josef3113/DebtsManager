@@ -118,13 +118,19 @@ public class Repository {
     public void addDebt(Debt debt, final RequestListener listener) {
         if (debt.getFrom().equals(debt.getTo())) {
             listener.onError("Can't To Debt To Same User");
+            return;
+        }
+        if(debt.getAmount() == 0)
+        {
+            listener.onError("Can't Amount Be Zero");
+            return;
         }
 
         final Debt debtToAdd = new Debt();
         Debt tempDebt = null;
 
         for (Debt d : allDebts) {
-            if (debt.getFrom().equals(d.getTo())) {
+            if (debt.getFrom().equals(d.getTo()) && debt.getTo().equals(d.getFrom())) {
                 tempDebt = d;
                 break;
             }
@@ -141,7 +147,7 @@ public class Repository {
 
                     @Override
                     public void onError(String msg) {
-                        listener.onError(msg);
+                        listener.onError("Was Error:" + msg);
                     }
                 });
                 return;
@@ -169,16 +175,15 @@ public class Repository {
 
                             @Override
                             public void onError(String msg) {
-                                listener.onError(msg);
-                            }
+                                listener.onError("Was Error:" + msg);                            }
                         });
 
                     }
 
                     @Override
                     public void onError(String msg) {
-                        listener.onError(msg);
-                    }
+
+                        listener.onError("Was Error:" + msg);                    }
                 });
 
             } else {
@@ -190,8 +195,8 @@ public class Repository {
 
                     @Override
                     public void onError(String msg) {
-                        listener.onError(msg);
-                    }
+
+                        listener.onError("Was Error:" + msg);                    }
                 });
 
             }
@@ -215,8 +220,8 @@ public class Repository {
 
                     @Override
                     public void onError(String msg) {
-                        listener.onError(msg);
-                    }
+
+                        listener.onError("Was Error:" + msg);                    }
                 });
 
             } else {
@@ -227,8 +232,9 @@ public class Repository {
                     }
 
                     @Override
-                    public void onError(String msg) {
-                        listener.onError(msg);
+                    public void onError(String msg)
+                    {
+                        listener.onError("Was Error:" + msg);
                     }
                 });
             }
@@ -257,8 +263,8 @@ public class Repository {
 
                 @Override
                 public void onError(String msg) {
-                    listener.onError(msg);
-                }
+
+                    listener.onError("Was Error:" + msg);                }
             });
         }
     }

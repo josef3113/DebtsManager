@@ -56,8 +56,8 @@ public class DebtPayFragment extends Fragment {
 
         final Spinner namesSpinner = view.findViewById(R.id.usersNameSpinner);
         final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getContext()
-                ,R.layout.spinner_item
-                ,repository.getAllTheUsers());
+                , R.layout.spinner_item
+                , repository.getAllTheUsers());
 
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -65,14 +65,29 @@ public class DebtPayFragment extends Fragment {
         namesSpinner.setAdapter(spinnerAdapter);
 
 
-
         addDebtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 String toUser = namesSpinner.getSelectedItem().toString();
-                final String amount = amountET.getText().toString();
+                String amount = amountET.getText().toString();
 
+                boolean amountParsed = true;
+                int amountInt = 0;
+
+                try {
+                    amountInt = Integer.parseInt(amount);
+                } catch (NumberFormatException ex) {
+                    amountParsed = false;
+                    Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                if (amountParsed)
+                {
+
+
+                    Debt newDebt = new Debt(repository.getCurrentUser().getName()
+                            , toUser
+                            , amountInt);
 
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
@@ -80,19 +95,16 @@ public class DebtPayFragment extends Fragment {
 
                     final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                    bundle.putString("text","Transferring Debt");
+                    bundle.putString("text", "Transferring Debt");
                     lottieAnimation.setArguments(bundle);
 
-                    lottieAnimation.show(transaction,"lottieDialog");
-
-                    Debt newDebt = new Debt(repository.getCurrentUser().getName()
-                            ,toUser
-                            ,Integer.parseInt(amount));
+                    lottieAnimation.show(transaction, "lottieDialog");
 
                     repository.addDebt(newDebt, new RequestListener() {
                         @Override
                         public void onComplete(Object o) {
                             lottieAnimation.dismiss();
+                            Toast.makeText(getContext(), "Debt Transferred", Toast.LENGTH_SHORT).show();
                             getActivity().onBackPressed();
                         }
 
@@ -103,7 +115,7 @@ public class DebtPayFragment extends Fragment {
                         }
                     });
                 }
-
+            }
 
         });
     }

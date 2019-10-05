@@ -72,37 +72,51 @@ public class ManagerAddDebtFragment extends Fragment {
                 String toUser = namesToSpinner.getSelectedItem().toString();
                 String amount = amountET.getText().toString();
 
-                Debt newDebt = new Debt(
-                        fromUser
-                        , toUser
-                        , Integer.parseInt(amount));
+
+                boolean amountParsed = true;
+                int amountInt = 0;
+
+                try {
+                    amountInt = Integer.parseInt(amount);
+                } catch (NumberFormatException ex) {
+                    amountParsed = false;
+                    Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                if (amountParsed) {
+
+                    Debt newDebt = new Debt(
+                            fromUser
+                            , toUser
+                            , amountInt);
 
 
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                Bundle bundle = new Bundle();
+                    Bundle bundle = new Bundle();
 
-                final LottieAnimation lottieAnimation = new LottieAnimation();
+                    final LottieAnimation lottieAnimation = new LottieAnimation();
 
-                bundle.putString("text","Transferring Debt");
-                lottieAnimation.setArguments(bundle);
+                    bundle.putString("text", "Transferring Debt");
+                    lottieAnimation.setArguments(bundle);
 
-                lottieAnimation.show(transaction, "lottieDialog");
+                    lottieAnimation.show(transaction, "lottieDialog");
 
-                repository.addDebt(newDebt, new RequestListener() {
-                    @Override
-                    public void onComplete(Object o) {
-                        lottieAnimation.dismiss();
-                        getActivity().onBackPressed();
-                    }
+                    repository.addDebt(newDebt, new RequestListener() {
+                        @Override
+                        public void onComplete(Object o) {
+                            lottieAnimation.dismiss();
+                            Toast.makeText(getContext(), "Debt Transferred", Toast.LENGTH_SHORT).show();
+                            getActivity().onBackPressed();
+                        }
 
-                    @Override
-                    public void onError(String msg) {
-                        lottieAnimation.dismiss();
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                        @Override
+                        public void onError(String msg) {
+                            lottieAnimation.dismiss();
+                            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 
             }
         });
