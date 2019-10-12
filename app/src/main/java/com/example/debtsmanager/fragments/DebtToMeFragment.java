@@ -84,24 +84,38 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt> 
             public void onClick(DialogInterface dialog, int which) {
 
                 Animation animationFade = AnimationUtils.loadAnimation(getContext(), R.anim.fade);
+
+                animationFade.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        repository.deleteDebt(debt, new RequestListener() {
+                            @Override
+                            public void onComplete(Object o) {
+                                Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String msg) {
+                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
                 recyclerView.getChildAt(repository.getDebtsToMe().indexOf(debt))
                         .startAnimation(animationFade);
 
                 dialog.dismiss();
-                for (int i = 0; i < 10000000; i++) ;
-
-                repository.deleteDebt(debt, new RequestListener() {
-                    @Override
-                    public void onComplete(Object o) {
-                        Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onError(String msg) {
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
             }
         });
 

@@ -85,31 +85,42 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
             public void onClick(DialogInterface dialog, int which) {
 
                 Animation animationFade = AnimationUtils.loadAnimation(getContext(),R.anim.fade);
-                managerAllDebts.getChildAt(repository.getAllDebts().indexOf(debt))
-                        .startAnimation(animationFade);
-
-                dialog.dismiss();
-                for(int i = 0 ; i<10000000;i++);
-
-                repository.deleteDebt(debt, new RequestListener() {
+                animationFade.setAnimationListener(new Animation.AnimationListener() {
                     @Override
-                    public void onComplete(Object o) {
-                        Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
+                    public void onAnimationStart(Animation animation) { }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        repository.deleteDebt(debt, new RequestListener() {
+                            @Override
+                            public void onComplete(Object o) {
+                                Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
+                                managerAllDebts.getAdapter().notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onError(String msg) {
+                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
                     }
 
                     @Override
-                    public void onError(String msg) {
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    public void onAnimationRepeat(Animation animation) {
+
                     }
                 });
+                managerAllDebts.getChildAt(repository.getAllDebts().indexOf(debt))
+                        .startAnimation(animationFade);
+                dialog.dismiss();
             }
         });
 
         alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
+            public void onClick(DialogInterface dialog, int which) { }
         });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
