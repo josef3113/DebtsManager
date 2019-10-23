@@ -19,7 +19,7 @@
         android:layout_height="90dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:src="@drawable/logo_small_round"
+        android:src="@drawable/ic_monetization_on_black_24dp"
         android:id="@+id/dialog_animation_image"
         android:tint="@color/green_300"
         />
