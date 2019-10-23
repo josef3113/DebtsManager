@@ -14,8 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.debtsmanager.R;
-import com.example.debtsmanager.adapters.DebtToOtherAdapter;
-import com.example.debtsmanager.controllers.FirebaseController;
+import com.example.debtsmanager.adapters.DebtAdapter;
 import com.example.debtsmanager.controllers.Repository;
 import com.example.debtsmanager.interfaces.DataChangeObserver;
 import com.example.debtsmanager.models.Debt;
@@ -28,7 +27,6 @@ import java.util.ArrayList;
 public class DebtToOtherFragment extends Fragment {
 
     private Repository repository;
-    private FirebaseController firebaseController;
 
     public DebtToOtherFragment()
     {
@@ -40,7 +38,7 @@ public class DebtToOtherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_debt_to_other, container, false);
+        return inflater.inflate(R.layout.fragment_debts_list, container, false);
     }
 
     @Override
@@ -48,13 +46,11 @@ public class DebtToOtherFragment extends Fragment {
     {
         repository = Repository.getInstance();
 
-        RecyclerView recyclerView = view.findViewById(R.id.debtToPayRecycleView);
+        RecyclerView recyclerView = view.findViewById(R.id.debtsRecycleView);
 
-        //ArrayList<Debt> tempdebts = (ArrayList<Debt>) repository.getDebtsToOther();
 
-        firebaseController = FirebaseController.getInstance();
 
-        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter((ArrayList<Debt>) repository.getDebtsToOther());
+        final DebtAdapter debtAdapter = new DebtAdapter((ArrayList<Debt>) repository.getDebtsToOther());
         recyclerView.setAdapter(debtAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -62,7 +58,7 @@ public class DebtToOtherFragment extends Fragment {
             @Override
             public void dataChanged()
             {
-                debtAdapter.setlist((ArrayList<Debt>) repository.getDebtsToOther());
+                debtAdapter.setlist(repository.getDebtsToOther());
                 debtAdapter.notifyDataSetChanged();
             }
         });

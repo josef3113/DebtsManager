@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/logo_small_round"
+                android:src="@drawable/ic_monetization_on_black_24dp"
                 android:tint="@color/green_300"
                 android:background="@color/grey_80"
                 android:padding="@dimen/spacing_small"
@@ -45,6 +45,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_marginStart="15dp"
+            android:gravity="center"
             >
 
             <TextView
@@ -91,7 +92,6 @@
             </LinearLayout>
 
 
-
             <TextView
                 android:id="@+id/debtToCellToPerson"
                 android:layout_width="wrap_content"
@@ -103,31 +103,6 @@
                 android:textColor="@color/blue_grey_500"
                 app:fontFamily="sans-serif-medium"
                 />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/debtToCellDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Wed, 20 Jan 19, 05:08 PM"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/grey_40" />
-
-            </LinearLayout>
 
         </LinearLayout>
 

@@ -28,11 +28,9 @@ import androidx.navigation.Navigation;
 public class LoginFragment extends Fragment
 {
 
-    private FirebaseController firebaseController;
 
     private EditText emailEt;
     private EditText passwordEt;
-
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -54,12 +52,12 @@ public class LoginFragment extends Fragment
 
         getActivity().setTitle("Debt Manager");
 
-        firebaseController = FirebaseController.getInstance();
-
         TextView signUpBtn = view.findViewById(R.id.loginSignUpBtn);
 
         emailEt = view.findViewById(R.id.loginEmailEt);
         passwordEt = view.findViewById(R.id.loginPasswordEt);
+        Button submitBtn = view.findViewById(R.id.loginLoginBtn);
+
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +66,6 @@ public class LoginFragment extends Fragment
             }
         });
 
-        Button submitBtn = view.findViewById(R.id.loginLoginBtn);
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,12 +76,12 @@ public class LoginFragment extends Fragment
 
                 Bundle bundle = new Bundle();
 
-                final LottieAnimation lottieAnimation = new LottieAnimation();
+                final DialogAnimation dialogAnimation = new DialogAnimation();
 
                 bundle.putString("text","Login");
-                lottieAnimation.setArguments(bundle);
+                dialogAnimation.setArguments(bundle);
 
-                lottieAnimation.show(transaction,"lottieDialog");
+                dialogAnimation.show(transaction,"dialog");
 
                 repository.login(emailEt.getText().toString(), passwordEt.getText().toString()
                         , new RequestListener() {
@@ -92,13 +89,13 @@ public class LoginFragment extends Fragment
                             public void onComplete(Object o)
                             {
                                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_tabsMenuFragment);
-                                lottieAnimation.dismiss();
+                                dialogAnimation.dismiss();
                             }
 
                             @Override
                             public void onError(String msg) {
                                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                                lottieAnimation.dismiss();
+                                dialogAnimation.dismiss();
                             }
                         });
 

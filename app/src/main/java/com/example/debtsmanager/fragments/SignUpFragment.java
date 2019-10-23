@@ -58,12 +58,12 @@ public class SignUpFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
 
-                final LottieAnimation lottieAnimation = new LottieAnimation();
+                final DialogAnimation dialogAnimation = new DialogAnimation();
 
                 bundle.putString("text", "Signing Up");
-                lottieAnimation.setArguments(bundle);
+                dialogAnimation.setArguments(bundle);
 
-                lottieAnimation.show(transaction, "lottieDialog");
+                dialogAnimation.show(transaction, "dialog");
 
                 User user = new User(emailET.getText().toString(), userNameET.getText().toString(), false);
 
@@ -72,13 +72,13 @@ public class SignUpFragment extends Fragment {
                     @Override
                     public void onComplete(Object o) {
                         Toast.makeText(getContext(), "Signed Up", Toast.LENGTH_SHORT).show();
-                        lottieAnimation.dismiss();
+                        dialogAnimation.dismiss();
                         getActivity().onBackPressed();
                     }
 
                     @Override
                     public void onError(String msg) {
-                        lottieAnimation.dismiss();
+                        dialogAnimation.dismiss();
                         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                     }
                 });

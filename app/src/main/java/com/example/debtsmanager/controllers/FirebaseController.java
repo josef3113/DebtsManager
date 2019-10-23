@@ -29,9 +29,6 @@ public class FirebaseController
     private final FirebaseFirestore db;
 
 
-
-
-
     private FirebaseController()
     {
         mAuth = FirebaseAuth.getInstance();
@@ -47,8 +44,13 @@ public class FirebaseController
         return instance;
     }
 
-    public void loginUser(final String userEmail, String userPassword, final RequestListener listener)
+    public void loginUser(final String userEmail, String userPassword, final RequestListener<User> listener)
     {
+        if (userEmail.isEmpty() || userPassword.isEmpty())
+        {
+            listener.onError("Email Or Password Is Blank");
+            return;
+        }
         mAuth.signInWithEmailAndPassword(userEmail, userPassword)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -153,7 +155,7 @@ public class FirebaseController
 
     }
 
-    public void debtToMe(User currentUser,final RequestListener requestListener)
+    void debtToMe(User currentUser, final RequestListener<List<Debt>> requestListener)
     {
 
         db.collection("Debts")
@@ -181,7 +183,7 @@ public class FirebaseController
                 });
     }
 
-    public void debtToOthers(User currentUser, final RequestListener requestListener)
+    void debtToOthers(User currentUser, final RequestListener<List<Debt>> requestListener)
     {
 
 
@@ -210,7 +212,7 @@ public class FirebaseController
 
     }
 
-    public void updateDebt(final Debt debt, final RequestListener requestListener)
+    void updateDebt(final Debt debt, final RequestListener requestListener)
     {
         db.collection("Debts")
                 .whereEqualTo("to",debt.getTo())
@@ -240,7 +242,7 @@ public class FirebaseController
         });
     }
 
-    public void deleteDebt(final Debt debt, final RequestListener requestListener)
+    void deleteDebt(final Debt debt, final RequestListener requestListener)
     {
         db.collection("Debts")
                 .whereEqualTo("to",debt.getTo())
@@ -269,7 +271,7 @@ public class FirebaseController
         });
     }
 
-    public void addDebt(Debt debt, final RequestListener requestListener)
+    void addDebt(Debt debt, final RequestListener requestListener)
     {
         db.collection("Debts")
                 .add(debt).addOnCompleteListener(new OnCompleteListener<DocumentReference>()
@@ -290,7 +292,7 @@ public class FirebaseController
 
     }
 
-    public void getAllUsers(final RequestListener<List<User>> requestListener)
+    void getAllUsers(final RequestListener<List<User>> requestListener)
     {
         db.collection("Users").addSnapshotListener(new EventListener<QuerySnapshot>()
         {
@@ -311,7 +313,7 @@ public class FirebaseController
 
     }
 
-    public void getAllDebts(final RequestListener<List<Debt>> requestListener)
+    void getAllDebts(final RequestListener<List<Debt>> requestListener)
     {
         db.collection("Debts").addSnapshotListener(
                 new EventListener<QuerySnapshot>() {
@@ -333,7 +335,7 @@ public class FirebaseController
     }
 
 
-    public void updateUser(final User user, final RequestListener requestListener)
+    void updateUser(final User user, final RequestListener requestListener)
     {
         db.collection("Users").whereEqualTo("email",user.getEmail())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()

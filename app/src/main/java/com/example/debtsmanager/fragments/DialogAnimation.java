@@ -2,7 +2,6 @@ package com.example.debtsmanager.fragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +13,11 @@ import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.debtsmanager.R;
 
-public class LottieAnimation extends DialogFragment
+public class DialogAnimation extends DialogFragment
 {
-    private TextView animaionText;
-    private ImageView image;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -31,12 +28,12 @@ public class LottieAnimation extends DialogFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = null;
+        View view;
 
-        view = inflater.inflate(R.layout.lottie_animation_fragment,container,false);
+        view = inflater.inflate(R.layout.dialog_fragment_animation,container,false);
 
-        animaionText = view.findViewById(R.id.lottie_text);
-        image = view.findViewById(R.id.lottieImage);
+        TextView animaionText = view.findViewById(R.id.dialog_animation_text);
+        ImageView image = view.findViewById(R.id.dialog_animation_image);
 
         Animation animationBlink = AnimationUtils.loadAnimation(getContext(),R.anim.blink);
 
@@ -62,11 +59,5 @@ public class LottieAnimation extends DialogFragment
         return view;
     }
 
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-    }
 }
 

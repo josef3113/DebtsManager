@@ -58,18 +58,16 @@ public class Repository {
             }
 
             @Override
-            public void onError(String msg) {
-
-            }
+            public void onError(String msg) { }
         });
     }
 
     private void updateDebtsToMe() {
-        firebaseController.debtToMe(currentUser, new RequestListener() {
+        firebaseController.debtToMe(currentUser, new RequestListener<List<Debt>>() {
             @Override
-            public void onComplete(Object o) {
+            public void onComplete(List<Debt> list ) {
 
-                debtsToMe = (List<Debt>) o;
+                debtsToMe = list;
                 if (observer != null) {
                     observer.dataChanged();
                 }
@@ -84,19 +82,17 @@ public class Repository {
 
 
     private void updateDebtToOther() {
-        firebaseController.debtToOthers(currentUser, new RequestListener() {
+        firebaseController.debtToOthers(currentUser, new RequestListener<List<Debt>>() {
             @Override
-            public void onComplete(Object o) {
-                debtsToOther = (List<Debt>) o;
+            public void onComplete(List<Debt> list) {
+                debtsToOther = list;
                 if (observer != null) {
                     observer.dataChanged();
                 }
             }
 
             @Override
-            public void onError(String msg) {
-
-            }
+            public void onError(String msg) {}
         });
     }
 
@@ -246,13 +242,11 @@ public class Repository {
 
 
     public void login(String email, String password, final RequestListener listener) {
-        if (email.isEmpty() || password.isEmpty()) {
-            listener.onError("Email Or Password Is Blank");
-        } else {
-            firebaseController.loginUser(email, password, new RequestListener() {
+
+            firebaseController.loginUser(email, password, new RequestListener<User>() {
                 @Override
-                public void onComplete(Object o) {
-                    currentUser = (User) o;
+                public void onComplete(User u) {
+                    currentUser = u;
 
                     updateData();
 
@@ -265,7 +259,7 @@ public class Repository {
                     listener.onError("Was Error:" + msg);
                 }
             });
-        }
+
     }
 
 

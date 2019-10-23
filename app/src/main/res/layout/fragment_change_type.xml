@@ -47,18 +47,10 @@
                 android:id="@+id/managerChangeTypeSpinner" />
 
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="@dimen/spacing_mlarge" />
-
 
             <View
                 android:layout_width="0dp"
-                android:layout_height="@dimen/spacing_middle" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="@dimen/spacing_large" />
+                android:layout_height="@dimen/spacing_xlarge" />
 
             <Button
                 android:layout_width="match_parent"

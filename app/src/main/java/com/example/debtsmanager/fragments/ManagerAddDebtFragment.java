@@ -48,6 +48,9 @@ public class ManagerAddDebtFragment extends Fragment {
 
         final Spinner namesFromSpinner = view.findViewById(R.id.managerAddDebtFromSpinner);
         final Spinner namesToSpinner = view.findViewById(R.id.managerAddDebtToSpinner);
+        final EditText amountET = view.findViewById(R.id.managerAddDebtAmountET);
+        Button managerAddDebtBtn = view.findViewById(R.id.managerAddDebtAddDebtBtn);
+
 
         final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getContext()
                 , R.layout.spinner_item
@@ -60,10 +63,6 @@ public class ManagerAddDebtFragment extends Fragment {
         namesToSpinner.setAdapter(spinnerAdapter);
 
 
-        final EditText amountET = view.findViewById(R.id.managerAddDebtAmountET);
-
-
-        Button managerAddDebtBtn = view.findViewById(R.id.managerAddDebtAddDebtBtn);
 
         managerAddDebtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,24 +94,24 @@ public class ManagerAddDebtFragment extends Fragment {
 
                     Bundle bundle = new Bundle();
 
-                    final LottieAnimation lottieAnimation = new LottieAnimation();
+                    final DialogAnimation dialogAnimation = new DialogAnimation();
 
                     bundle.putString("text", "Transferring Debt");
-                    lottieAnimation.setArguments(bundle);
+                    dialogAnimation.setArguments(bundle);
 
-                    lottieAnimation.show(transaction, "lottieDialog");
+                    dialogAnimation.show(transaction, "dialog");
 
                     repository.addDebt(newDebt, new RequestListener() {
                         @Override
                         public void onComplete(Object o) {
-                            lottieAnimation.dismiss();
+                            dialogAnimation.dismiss();
                             Toast.makeText(getContext(), "Debt Transferred", Toast.LENGTH_SHORT).show();
                             getActivity().onBackPressed();
                         }
 
                         @Override
                         public void onError(String msg) {
-                            lottieAnimation.dismiss();
+                            dialogAnimation.dismiss();
                             Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                         }
                     });

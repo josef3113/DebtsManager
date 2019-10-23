@@ -52,8 +52,6 @@ public class ChangeTypeFragment extends Fragment
         final Spinner namesSpinner = view.findViewById(R.id.managerChangeTypeSpinner);
         final Button managerChangeTypeBtn = view.findViewById(R.id.managerChangeTypeBtn);
 
-
-
         final ArrayAdapter spinnerAdapter = new ArrayAdapter(getContext()
                 ,R.layout.spinner_item
                 ,repository.getAllTheUsers());
@@ -96,12 +94,12 @@ public class ChangeTypeFragment extends Fragment
 
                 Bundle bundle = new Bundle();
 
-                final LottieAnimation lottieAnimation = new LottieAnimation();
+                final DialogAnimation dialogAnimation = new DialogAnimation();
 
                 bundle.putString("text","Change Type");
-                lottieAnimation.setArguments(bundle);
+                dialogAnimation.setArguments(bundle);
 
-                lottieAnimation.show(transaction,"lottieDialog");
+                dialogAnimation.show(transaction,"dialog");
 
 
                 repository.changeUserType(selectedUser, new RequestListener()
@@ -110,7 +108,7 @@ public class ChangeTypeFragment extends Fragment
                     public void onComplete(Object o)
                     {
                         Toast.makeText(getContext(), "Type Changed", Toast.LENGTH_SHORT).show();
-                        lottieAnimation.dismiss();
+                        dialogAnimation.dismiss();
                         getActivity().onBackPressed();
                     }
 
@@ -118,7 +116,7 @@ public class ChangeTypeFragment extends Fragment
                     public void onError(String msg)
                     {
                         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                        lottieAnimation.dismiss();
+                        dialogAnimation.dismiss();
                     }
                 });
 

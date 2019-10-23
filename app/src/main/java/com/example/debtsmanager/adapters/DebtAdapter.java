@@ -16,29 +16,27 @@ import com.example.debtsmanager.models.Debt;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.DebtToOtherAdapterHolder>
+public class DebtAdapter extends RecyclerView.Adapter<DebtAdapter.DebtAdapterHolder>
 {
 
     private List<Debt> list;
     private LongPressReader<Debt> pressReader;
 
 
-    public DebtToOtherAdapter(ArrayList<Debt> list) {
+    public DebtAdapter(ArrayList<Debt> list) {
 
         this.list = list;
     }
 
-    public DebtToOtherAdapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    public DebtAdapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem = layoutInflater.inflate(R.layout.debt_to_cell, parent, false);
-        DebtToOtherAdapterHolder holder = new DebtToOtherAdapterHolder(listItem);
-        return holder;
-
+        return new DebtAdapterHolder(listItem);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final DebtToOtherAdapter.DebtToOtherAdapterHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final DebtAdapterHolder holder, int position) {
 
         final Debt debt = list.get(position);
 
@@ -75,21 +73,17 @@ public class DebtToOtherAdapter extends RecyclerView.Adapter<DebtToOtherAdapter.
         this.pressReader = pressReader;
     }
 
-    public static class DebtToOtherAdapterHolder extends RecyclerView.ViewHolder {
+    public static class DebtAdapterHolder extends RecyclerView.ViewHolder {
 
-        final ImageView personImage;
         final TextView debtToCellAmount;
         final TextView debtToCellToPerson;
-        final TextView debtToCellDate;
         final TextView debtToCellFromUser;
 
-        DebtToOtherAdapterHolder(@NonNull View itemView)
+        DebtAdapterHolder(@NonNull View itemView)
         {
             super(itemView);
-            personImage = itemView.findViewById(R.id.debtToCellPersonImage);
             debtToCellAmount = itemView.findViewById(R.id.debtToCellAmount);
             debtToCellToPerson = itemView.findViewById(R.id.debtToCellToPerson);
-            debtToCellDate = itemView.findViewById(R.id.debtToCellDate);
             debtToCellFromUser = itemView.findViewById(R.id.debtToCellFromUser);
         }
 

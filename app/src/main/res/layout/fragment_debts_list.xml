@@ -9,7 +9,7 @@ android:background="@color/blue_grey_900"
     >
 
 <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/debtToOtherFragmentRecycleView"
+    android:id="@+id/debtsRecycleView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"

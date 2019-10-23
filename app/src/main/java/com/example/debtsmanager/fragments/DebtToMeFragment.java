@@ -19,7 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.example.debtsmanager.R;
-import com.example.debtsmanager.adapters.DebtToOtherAdapter;
+import com.example.debtsmanager.adapters.DebtAdapter;
 import com.example.debtsmanager.controllers.Repository;
 import com.example.debtsmanager.interfaces.DataChangeObserver;
 import com.example.debtsmanager.interfaces.LongPressReader;
@@ -45,7 +45,7 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt> 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_debt_to_me, container, false);
+        return inflater.inflate(R.layout.fragment_debts_list, container, false);
     }
 
     @Override
@@ -53,10 +53,10 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt> 
 
         repository = Repository.getInstance();
 
-        recyclerView = view.findViewById(R.id.debtToOtherFragmentRecycleView);
+        recyclerView = view.findViewById(R.id.debtsRecycleView);
 
 
-        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter((ArrayList<Debt>) repository.getDebtsToMe());
+        final DebtAdapter debtAdapter = new DebtAdapter((ArrayList<Debt>) repository.getDebtsToMe());
         recyclerView.setAdapter(debtAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -87,13 +87,14 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt> 
 
                 animationFade.setAnimationListener(new Animation.AnimationListener() {
                     @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
+                    public void onAnimationStart(Animation animation) { }
 
                     @Override
-                    public void onAnimationEnd(Animation animation) {
-                        repository.deleteDebt(debt, new RequestListener() {
+                    public void onAnimationEnd(Animation animation)
+                    {
+
+                        repository.deleteDebt(debt, new RequestListener()
+                        {
                             @Override
                             public void onComplete(Object o) {
                                 Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
@@ -107,9 +108,7 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt> 
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
+                    public void onAnimationRepeat(Animation animation) { }
                 });
 
                 recyclerView.getChildAt(repository.getDebtsToMe().indexOf(debt))

@@ -19,7 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.example.debtsmanager.R;
-import com.example.debtsmanager.adapters.DebtToOtherAdapter;
+import com.example.debtsmanager.adapters.DebtAdapter;
 import com.example.debtsmanager.controllers.Repository;
 import com.example.debtsmanager.interfaces.DataChangeObserver;
 import com.example.debtsmanager.interfaces.LongPressReader;
@@ -47,7 +47,7 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_manager_all_debts, container, false);
+        return inflater.inflate(R.layout.fragment_debts_list, container, false);
     }
 
     @Override
@@ -56,9 +56,9 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
 
         repository = Repository.getInstance();
 
-        managerAllDebts = view.findViewById(R.id.managerAllDebts);
+        managerAllDebts = view.findViewById(R.id.debtsRecycleView);
 
-        final DebtToOtherAdapter debtAdapter = new DebtToOtherAdapter((ArrayList<Debt>) repository.getAllDebts());
+        final DebtAdapter debtAdapter = new DebtAdapter((ArrayList<Debt>) repository.getAllDebts());
 
         managerAllDebts.setAdapter(debtAdapter);
         managerAllDebts.setLayoutManager(new LinearLayoutManager(getContext()));

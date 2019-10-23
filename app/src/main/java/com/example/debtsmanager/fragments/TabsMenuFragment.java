@@ -21,7 +21,6 @@ import com.example.debtsmanager.controllers.Repository;
  */
 public class TabsMenuFragment extends Fragment
 {
-    private Repository repository;
     public TabsMenuFragment() {
     // Required empty public constructor
 }
@@ -37,7 +36,7 @@ public class TabsMenuFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
-        repository = Repository.getInstance();
+        Repository repository = Repository.getInstance();
 
         getActivity().setTitle(repository.getCurrentUser().getName());
 

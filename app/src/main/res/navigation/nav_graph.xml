@@ -43,12 +43,12 @@
         android:id="@+id/debtToOtherFragment"
         android:name="com.example.debtsmanager.fragments.DebtToOtherFragment"
         android:label="fragment_debt_to_other"
-        tools:layout="@layout/fragment_debt_to_other" />
+        tools:layout="@layout/fragment_debts_list" />
     <fragment
         android:id="@+id/debtToMeFragment"
         android:name="com.example.debtsmanager.fragments.DebtToMeFragment"
         android:label="fragment_debt_to_me"
-        tools:layout="@layout/fragment_debt_to_me" />
+        tools:layout="@layout/fragment_debts_list" />
     <fragment
         android:id="@+id/debtPayFragment"
         android:name="com.example.debtsmanager.fragments.DebtPayFragment"
@@ -78,7 +78,7 @@
         android:id="@+id/managerAllDebtsFragment"
         android:name="com.example.debtsmanager.fragments.ManagerAllDebtsFragment"
         android:label="fragment_manager_all_debts"
-        tools:layout="@layout/fragment_manager_all_debts" />
+        tools:layout="@layout/fragment_debts_list" />
     <fragment
         android:id="@+id/changeTypeFragment"
         android:name="com.example.debtsmanager.fragments.ChangeTypeFragment"
