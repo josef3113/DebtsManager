@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <corners
+        android:bottomLeftRadius="@dimen/spacing_medium"
+        android:bottomRightRadius="@dimen/spacing_medium"
+        android:topLeftRadius="@dimen/spacing_medium"
+        android:topRightRadius="@dimen/spacing_medium"
+        />
+
+    <gradient
+        android:angle="225"
+        android:startColor="@color/green_300"
+        android:centerColor="@color/blue_grey_300"
+        android:endColor="@color/green_300"
+        />
+
+    <stroke
+        android:color="@android:color/black"
+        android:width="@dimen/cardview_default_radius"
+        />
+
+
+</shape>
