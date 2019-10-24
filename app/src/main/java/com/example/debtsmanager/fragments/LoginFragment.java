@@ -58,6 +58,7 @@ public class LoginFragment extends Fragment
         passwordEt = view.findViewById(R.id.loginPasswordEt);
         Button submitBtn = view.findViewById(R.id.loginLoginBtn);
 
+        emailEt.requestFocus();
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override

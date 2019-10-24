@@ -50,7 +50,6 @@ public class SignUpFragment extends Fragment {
         final EditText emailET = view.findViewById(R.id.signUpEmailET);
         final EditText passwordET = view.findViewById(R.id.signUpPasswordET);
 
-
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -34,6 +34,7 @@
                 android:text="Username"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/blue_grey_500"
+                android:inputType="text"
                 android:textStyle="bold" />
 
             <EditText

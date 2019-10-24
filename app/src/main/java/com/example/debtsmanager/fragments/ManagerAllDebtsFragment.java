@@ -2,6 +2,7 @@ package com.example.debtsmanager.fragments;
 
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;

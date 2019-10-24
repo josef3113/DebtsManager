@@ -30,9 +30,9 @@
                 android:layout_height="@dimen/spacing_large" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Choose User: "
+                android:text="Choose User:"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/blue_grey_500"
                 android:textStyle="bold" />
