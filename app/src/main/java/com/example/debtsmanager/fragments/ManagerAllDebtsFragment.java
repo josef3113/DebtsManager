@@ -110,14 +110,14 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
                         repository.deleteDebt(debt, new RequestListener() {
                             @Override
                             public void onComplete(Object o) {
-                                Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
                                 dialogAnimation.dismiss();
+                                Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onError(String msg) {
-                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                                 dialogAnimation.dismiss();
+                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                             }
                         });
 
