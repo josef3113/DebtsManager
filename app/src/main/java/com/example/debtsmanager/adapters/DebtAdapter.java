@@ -41,8 +41,8 @@ public class DebtAdapter extends RecyclerView.Adapter<DebtAdapter.DebtAdapterHol
         final Debt debt = list.get(position);
 
         holder.debtToCellAmount.setText(debt.getAmount()+"");
-        holder.debtToCellToPerson.setText(debt.getFrom());
-        holder.debtToCellFromUser.setText(debt.getTo());
+        holder.debtToCellFromUser.setText(debt.getFrom());
+        holder.debtToCellToPerson.setText(debt.getTo());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v)
