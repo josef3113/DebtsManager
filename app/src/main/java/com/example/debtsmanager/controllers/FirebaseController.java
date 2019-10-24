@@ -60,6 +60,8 @@ public class FirebaseController {
                                         List<User> users = task.getResult().toObjects(User.class);
 
                                         listener.onComplete(users.get(0));
+                                    } else {
+                                        listener.onError(task.getException().getMessage());
                                     }
                                 }
                             });
