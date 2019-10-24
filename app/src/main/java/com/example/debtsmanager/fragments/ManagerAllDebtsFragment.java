@@ -121,7 +121,6 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
                             }
                         });
 
-
                     }
 
                     @Override
