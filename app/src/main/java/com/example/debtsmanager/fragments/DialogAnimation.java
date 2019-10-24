@@ -69,18 +69,5 @@ public class DialogAnimation extends DialogFragment
         return view;
     }
 
-    @Override
-    public int show(@NonNull FragmentTransaction transaction, @Nullable String tag)
-    {
-        MainActivity.getInstance().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-        return super.show(transaction,tag);
-    }
-
-    @Override
-    public void dismiss()
-    {
-        MainActivity.getInstance().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-        super.dismiss();
-    }
 }
 
