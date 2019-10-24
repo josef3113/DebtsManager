@@ -72,13 +72,13 @@ public class ManagerAddDebtFragment extends Fragment {
                 String amount = amountET.getText().toString();
 
 
-                boolean amountParsed = true;
+                boolean amountParsed = false;
                 int amountInt = 0;
 
                 try {
                     amountInt = Integer.parseInt(amount);
+                    amountParsed = true;
                 } catch (NumberFormatException ex) {
-                    amountParsed = false;
                     Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
@@ -92,10 +92,9 @@ public class ManagerAddDebtFragment extends Fragment {
 
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                    Bundle bundle = new Bundle();
-
                     final DialogAnimation dialogAnimation = new DialogAnimation();
 
+                    Bundle bundle = new Bundle();
                     bundle.putString("text", "Transferring Debt");
                     dialogAnimation.setArguments(bundle);
 

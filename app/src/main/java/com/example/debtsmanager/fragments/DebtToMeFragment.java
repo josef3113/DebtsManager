@@ -92,7 +92,6 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt> 
                     @Override
                     public void onAnimationEnd(Animation animation)
                     {
-
                         repository.deleteDebt(debt, new RequestListener()
                         {
                             @Override

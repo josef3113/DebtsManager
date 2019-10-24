@@ -75,10 +75,9 @@ public class LoginFragment extends Fragment
 
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                Bundle bundle = new Bundle();
-
                 final DialogAnimation dialogAnimation = new DialogAnimation();
 
+                Bundle bundle = new Bundle();
                 bundle.putString("text","Login");
                 dialogAnimation.setArguments(bundle);
 

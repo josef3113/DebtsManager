@@ -16,7 +16,7 @@ public class Repository {
     private List<User> allTheUsers;
     private List<Debt> allDebts;
 
-
+    private final FirebaseController firebaseController;
     private DataChangeObserver observer;
     private User currentUser;
 
@@ -24,7 +24,6 @@ public class Repository {
         return currentUser;
     }
 
-    private final FirebaseController firebaseController;
 
     public static Repository getInstance() {
         if (instance == null) {

@@ -21,160 +21,129 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class FirebaseController
-{
+public class FirebaseController {
+
     private static FirebaseController instance = null;
 
     private final FirebaseAuth mAuth;
     private final FirebaseFirestore db;
 
 
-    private FirebaseController()
-    {
+    private FirebaseController() {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
     }
 
     public static FirebaseController getInstance() {
-        if(instance ==  null)
-        {
+        if (instance == null) {
             instance = new FirebaseController();
         }
 
         return instance;
     }
 
-    public void loginUser(final String userEmail, String userPassword, final RequestListener<User> listener)
-    {
-        if (userEmail.isEmpty() || userPassword.isEmpty())
-        {
+    public void loginUser(final String userEmail, String userPassword, final RequestListener<User> listener) {
+        if (userEmail.isEmpty() || userPassword.isEmpty()) {
             listener.onError("Email Or Password Is Blank");
             return;
         }
         mAuth.signInWithEmailAndPassword(userEmail, userPassword)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task)
-                    {
-                       if(task.isSuccessful())
-                       {
-                           db.collection("Users").whereEqualTo("email",userEmail)
-                                   .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                               @Override
-                               public void onComplete(@NonNull Task<QuerySnapshot> task)
-                               {
-                                   if(task.isSuccessful())
-                                   {
-                                       List<User> users = task.getResult().toObjects(User.class);
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            db.collection("Users").whereEqualTo("email", userEmail)
+                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        List<User> users = task.getResult().toObjects(User.class);
 
-                                       listener.onComplete(users.get(0));
-                                   }
-                               }
-                           });
+                                        listener.onComplete(users.get(0));
+                                    }
+                                }
+                            });
 
-                       }else
-                       {
-                           listener.onError(task.getException().getMessage());
-                       }
+                        } else {
+                            listener.onError(task.getException().getMessage());
+                        }
                     }
                 });
 
     }
 
 
-    public void signUpUser(final User user, final String password, final RequestListener requestListener)
-    {
-        if(user.getName().isEmpty())
-        {
+    public void signUpUser(final User user, final String password, final RequestListener requestListener) {
+        if (user.getName().isEmpty()) {
             requestListener.onError("User Name Can't Be Empty");
             return;
         }
 
-        if( user.getEmail().isEmpty() )
-        {
+        if (user.getEmail().isEmpty()) {
             requestListener.onError("Email Can't Be Empty");
             return;
         }
 
-        if( password.isEmpty())
-        {
+        if (password.isEmpty()) {
             requestListener.onError("Password Can't Be Empty");
             return;
         }
 
-       db.collection("Users")
-               .whereEqualTo("name", user.getName())
-               .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-       {
-           @Override
-           public void onComplete(@NonNull Task<QuerySnapshot> task)
-           {
-               List<User> users = task.getResult().toObjects(User.class);
-               if (users.isEmpty())
-               {
-                   mAuth.createUserWithEmailAndPassword(user.getEmail(),password)
-                           .addOnCompleteListener(new OnCompleteListener<AuthResult>()
-                           {
-                               @Override
-                               public void onComplete(@NonNull Task<AuthResult> task)
-                               {
-                                 if (task.isSuccessful())
-                                 {
-                                     db.collection("Users")
-                                             .add(user)
-                                             .addOnCompleteListener(new OnCompleteListener<DocumentReference>()
-                                             {
-                                                 @Override
-                                                 public void onComplete(@NonNull Task<DocumentReference> task)
-                                                 {
-                                                     if(task.isSuccessful())
-                                                     {
-                                                         requestListener.onComplete(null);
-                                                     }else
-                                                     {
-                                                         requestListener.onError(task.getException().getMessage());
-                                                     }
+        db.collection("Users")
+                .whereEqualTo("name", user.getName())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<User> users = task.getResult().toObjects(User.class);
+                if (users.isEmpty()) {
+                    mAuth.createUserWithEmailAndPassword(user.getEmail(), password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        db.collection("Users")
+                                                .add(user)
+                                                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                        if (task.isSuccessful()) {
+                                                            requestListener.onComplete(null);
+                                                        } else {
+                                                            requestListener.onError(task.getException().getMessage());
+                                                        }
 
-                                                 }
-                                             });
+                                                    }
+                                                });
 
-                                 }else
-                                 {
-                                     requestListener.onError(task.getException().getMessage());
-                                 }
-                               }
-                           });
+                                    } else {
+                                        requestListener.onError(task.getException().getMessage());
+                                    }
+                                }
+                            });
 
-               }else
-               {
-                   requestListener.onError("Username already exists");
-               }
+                } else {
+                    requestListener.onError("Username already exists");
+                }
 
-           }
-       });
+            }
+        });
 
     }
 
-    void debtToMe(User currentUser, final RequestListener<List<Debt>> requestListener)
-    {
+    void debtToMe(User currentUser, final RequestListener<List<Debt>> requestListener) {
 
         db.collection("Debts")
                 .whereEqualTo("to", currentUser.getName())
-                .addSnapshotListener(new EventListener<QuerySnapshot>()
-                {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots
-                            , @Nullable FirebaseFirestoreException e)
-                    {
-                        if(e != null)
-                        {
+                            , @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
                             requestListener.onError(e.getMessage());
-                        }else
-                        {
+                        } else {
                             List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
                             List<Debt> tempList = new ArrayList<>();
-                            for(DocumentSnapshot doc: documents)
-                            {
+                            for (DocumentSnapshot doc : documents) {
                                 tempList.add(doc.toObject(Debt.class));
                             }
                             requestListener.onComplete(tempList);
@@ -183,57 +152,46 @@ public class FirebaseController
                 });
     }
 
-    void debtToOthers(User currentUser, final RequestListener<List<Debt>> requestListener)
-    {
+    void debtToOthers(User currentUser, final RequestListener<List<Debt>> requestListener) {
 
 
         db.collection("Debts").whereEqualTo("from", currentUser.getName())
-                .addSnapshotListener(new EventListener<QuerySnapshot>()
-                {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots
-                            , @Nullable FirebaseFirestoreException e)
-                    {
-                       if(e != null)
-                       {
-                           requestListener.onError(e.getMessage());
-                       }else
-                       {
-                           List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
-                           List<Debt> tempList = new ArrayList<>();
-                           for(DocumentSnapshot doc: documents)
-                           {
-                               tempList.add(doc.toObject(Debt.class));
-                           }
-                           requestListener.onComplete(tempList);
-                       }
+                            , @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            requestListener.onError(e.getMessage());
+                        } else {
+                            List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+                            List<Debt> tempList = new ArrayList<>();
+                            for (DocumentSnapshot doc : documents) {
+                                tempList.add(doc.toObject(Debt.class));
+                            }
+                            requestListener.onComplete(tempList);
+                        }
                     }
                 });
 
     }
 
-    void updateDebt(final Debt debt, final RequestListener requestListener)
-    {
+    void updateDebt(final Debt debt, final RequestListener requestListener) {
         db.collection("Debts")
-                .whereEqualTo("to",debt.getTo())
-                .whereEqualTo("from",debt.getFrom())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-        {
+                .whereEqualTo("to", debt.getTo())
+                .whereEqualTo("from", debt.getFrom())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task)
-            {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
 
                 db.collection("Debts").document(documentSnapshot.getId())
-                        .update("amount",debt.getAmount())
+                        .update("amount", debt.getAmount())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful())
-                                {
+                                if (task.isSuccessful()) {
                                     requestListener.onComplete(null);
-                                }else
-                                {
+                                } else {
                                     requestListener.onError(task.getException().getMessage());
                                 }
                             }
@@ -242,27 +200,22 @@ public class FirebaseController
         });
     }
 
-    void deleteDebt(final Debt debt, final RequestListener requestListener)
-    {
+    void deleteDebt(final Debt debt, final RequestListener requestListener) {
         db.collection("Debts")
-                .whereEqualTo("to",debt.getTo())
-                .whereEqualTo("from",debt.getFrom())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-        {
+                .whereEqualTo("to", debt.getTo())
+                .whereEqualTo("from", debt.getFrom())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task)
-            {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
 
                 db.collection("Debts").document(documentSnapshot.getId()).delete()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful())
-                                {
+                                if (task.isSuccessful()) {
                                     requestListener.onComplete(null);
-                                }else
-                                {
+                                } else {
                                     requestListener.onError(task.getException().getMessage());
                                 }
                             }
@@ -271,19 +224,14 @@ public class FirebaseController
         });
     }
 
-    void addDebt(Debt debt, final RequestListener requestListener)
-    {
+    void addDebt(Debt debt, final RequestListener requestListener) {
         db.collection("Debts")
-                .add(debt).addOnCompleteListener(new OnCompleteListener<DocumentReference>()
-        {
+                .add(debt).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentReference> task)
-            {
-                if(task.isSuccessful())
-                {
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
                     requestListener.onComplete(null);
-                }else
-                {
+                } else {
                     requestListener.onError(task.getException().getMessage());
                 }
             }
@@ -292,18 +240,13 @@ public class FirebaseController
 
     }
 
-    void getAllUsers(final RequestListener<List<User>> requestListener)
-    {
-        db.collection("Users").addSnapshotListener(new EventListener<QuerySnapshot>()
-        {
+    void getAllUsers(final RequestListener<List<User>> requestListener) {
+        db.collection("Users").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e)
-            {
-                if(e != null)
-                {
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
                     requestListener.onError(e.getMessage());
-                }else
-                {
+                } else {
                     List<User> users = queryDocumentSnapshots.toObjects(User.class);
                     requestListener.onComplete(users);
                 }
@@ -313,18 +256,14 @@ public class FirebaseController
 
     }
 
-    void getAllDebts(final RequestListener<List<Debt>> requestListener)
-    {
+    void getAllDebts(final RequestListener<List<Debt>> requestListener) {
         db.collection("Debts").addSnapshotListener(
                 new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e)
-                    {
-                        if(e != null)
-                        {
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
                             requestListener.onError(e.getMessage());
-                        }else
-                        {
+                        } else {
                             List<Debt> allDebts = queryDocumentSnapshots.toObjects(Debt.class);
                             requestListener.onComplete(allDebts);
 
@@ -335,37 +274,28 @@ public class FirebaseController
     }
 
 
-    void updateUser(final User user, final RequestListener requestListener)
-    {
-        db.collection("Users").whereEqualTo("email",user.getEmail())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-        {
+    void updateUser(final User user, final RequestListener requestListener) {
+        db.collection("Users").whereEqualTo("email", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task)
-            {
-                if(task.isSuccessful())
-                {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
                     String userId = task.getResult().getDocuments().get(0).getId();
                     db.collection("Users").document(userId)
-                            .update("ismanager",user.isIsmanager())
-                            .addOnCompleteListener(new OnCompleteListener<Void>()
-                            {
+                            .update("ismanager", user.isIsmanager())
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-                                    if(task.isSuccessful())
-                                    {
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
                                         requestListener.onComplete(null);
-                                    }else
-                                    {
+                                    } else {
                                         requestListener.onError(task.getException().getMessage());
                                     }
 
                                 }
                             });
 
-                }else
-                {
+                } else {
                     requestListener.onError(task.getException().getMessage());
                 }
 

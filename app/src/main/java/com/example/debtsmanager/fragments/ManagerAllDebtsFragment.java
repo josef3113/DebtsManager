@@ -61,11 +61,11 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
         managerAllDebts = view.findViewById(R.id.debtsRecycleView);
 
         final DebtAdapter debtAdapter = new DebtAdapter((ArrayList<Debt>) repository.getAllDebts());
+        debtAdapter.setPressReader(this);
 
         managerAllDebts.setAdapter(debtAdapter);
         managerAllDebts.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        debtAdapter.setPressReader(this);
 
         repository.setObserver(new DataChangeObserver() {
             @Override
@@ -76,6 +76,7 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
             }
         });
     }
+
 
     @Override
     public void onClicked(final Debt debt) {

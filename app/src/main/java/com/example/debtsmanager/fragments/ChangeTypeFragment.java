@@ -25,96 +25,82 @@ import com.example.debtsmanager.models.User;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChangeTypeFragment extends Fragment
-{
+public class ChangeTypeFragment extends Fragment {
     private User selectedUser;
 
 
-    public ChangeTypeFragment()
-    {
+    public ChangeTypeFragment() {
         // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_change_type, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         final Repository repository = Repository.getInstance();
 
         final Spinner namesSpinner = view.findViewById(R.id.managerChangeTypeSpinner);
         final Button managerChangeTypeBtn = view.findViewById(R.id.managerChangeTypeBtn);
 
         final ArrayAdapter spinnerAdapter = new ArrayAdapter(getContext()
-                ,R.layout.spinner_item
-                ,repository.getAllTheUsers());
+                , R.layout.spinner_item
+                , repository.getAllTheUsers());
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         namesSpinner.setAdapter(spinnerAdapter);
 
-        namesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        namesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                if(repository.getAllTheUsers().get(position).isIsmanager())
-                {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (repository.getAllTheUsers().get(position).isIsmanager()) {
                     managerChangeTypeBtn.setText("Change To Regular User");
 
-                }else
-                {
+                } else {
                     managerChangeTypeBtn.setText("Change To Manager");
                 }
                 selectedUser = repository.getAllTheUsers().get(position);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
+            public void onNothingSelected(AdapterView<?> parent) {
                 managerChangeTypeBtn.setText("Waiting For User");
             }
 
 
         });
 
-        managerChangeTypeBtn.setOnClickListener(new View.OnClickListener()
-        {
+        managerChangeTypeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                Bundle bundle = new Bundle();
 
                 final DialogAnimation dialogAnimation = new DialogAnimation();
 
-                bundle.putString("text","Change Type");
+                Bundle bundle = new Bundle();
+                bundle.putString("text", "Change Type");
                 dialogAnimation.setArguments(bundle);
 
-                dialogAnimation.show(transaction,"dialog");
+                dialogAnimation.show(transaction, "dialog");
 
 
-                repository.changeUserType(selectedUser, new RequestListener()
-                {
+                repository.changeUserType(selectedUser, new RequestListener() {
                     @Override
-                    public void onComplete(Object o)
-                    {
+                    public void onComplete(Object o) {
                         Toast.makeText(getContext(), "Type Changed", Toast.LENGTH_SHORT).show();
                         dialogAnimation.dismiss();
                         getActivity().onBackPressed();
                     }
 
                     @Override
-                    public void onError(String msg)
-                    {
+                    public void onError(String msg) {
                         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                         dialogAnimation.dismiss();
                     }

@@ -66,20 +66,18 @@ public class DebtPayFragment extends Fragment {
                 String toUser = namesSpinner.getSelectedItem().toString();
                 String amount = amountET.getText().toString();
 
-                boolean amountParsed = true;
+                boolean amountParsed = false;
                 int amountInt = 0;
 
                 try {
                     amountInt = Integer.parseInt(amount);
+                    amountParsed = true;
                 } catch (NumberFormatException ex) {
-                    amountParsed = false;
                     Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
                 if (amountParsed)
                 {
-
-
                     Debt newDebt = new Debt(repository.getCurrentUser().getName()
                             , toUser
                             , amountInt);
@@ -115,5 +113,3 @@ public class DebtPayFragment extends Fragment {
         });
     }
 }
-
-
