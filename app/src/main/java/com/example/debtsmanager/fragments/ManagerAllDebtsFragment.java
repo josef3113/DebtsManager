@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -85,7 +86,7 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
 
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(final DialogInterface dialog, int which) {
 
                 final Animation animationFade = AnimationUtils.loadAnimation(getContext(),R.anim.fade);
                 animationFade.setAnimationListener(new Animation.AnimationListener() {
@@ -96,16 +97,27 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                        final DialogAnimation dialogAnimation = new DialogAnimation();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("text","Delete From DB");
+                        dialogAnimation.setArguments(bundle);
+
+                        dialogAnimation.show(transaction,"dialog");
+
                         repository.deleteDebt(debt, new RequestListener() {
                             @Override
                             public void onComplete(Object o) {
                                 Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
-                                managerAllDebts.getAdapter().notifyDataSetChanged();
+                                dialogAnimation.dismiss();
                             }
 
                             @Override
                             public void onError(String msg) {
                                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                                dialogAnimation.dismiss();
                             }
                         });
 

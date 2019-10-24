@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,18 +91,28 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt> 
                     public void onAnimationStart(Animation animation) { }
 
                     @Override
-                    public void onAnimationEnd(Animation animation)
-                    {
-                        repository.deleteDebt(debt, new RequestListener()
-                        {
+                    public void onAnimationEnd(Animation animation) {
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                        final DialogAnimation dialogAnimation = new DialogAnimation();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("text", "Delete From DB");
+                        dialogAnimation.setArguments(bundle);
+
+                        dialogAnimation.show(transaction, "dialog");
+
+                        repository.deleteDebt(debt, new RequestListener() {
                             @Override
                             public void onComplete(Object o) {
                                 Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
+                                dialogAnimation.dismiss();
                             }
 
                             @Override
                             public void onError(String msg) {
                                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                                dialogAnimation.dismiss();
                             }
                         });
                     }
