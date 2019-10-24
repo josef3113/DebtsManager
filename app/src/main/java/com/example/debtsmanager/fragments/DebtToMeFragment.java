@@ -84,46 +84,33 @@ public class DebtToMeFragment extends Fragment implements LongPressReader<Debt> 
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Animation animationFade = AnimationUtils.loadAnimation(getContext(), R.anim.fade);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                animationFade.setAnimationListener(new Animation.AnimationListener() {
+                final DialogAnimation dialogAnimation = new DialogAnimation();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("text", "Delete From DB");
+                dialogAnimation.setArguments(bundle);
+
+                dialogAnimation.show(transaction, "dialog");
+
+                repository.deleteDebt(debt, new RequestListener() {
                     @Override
-                    public void onAnimationStart(Animation animation) { }
+                    public void onComplete(Object o) {
 
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                        final DialogAnimation dialogAnimation = new DialogAnimation();
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("text", "Delete From DB");
-                        dialogAnimation.setArguments(bundle);
-
-                        dialogAnimation.show(transaction, "dialog");
-
-                        repository.deleteDebt(debt, new RequestListener() {
-                            @Override
-                            public void onComplete(Object o) {
-                                dialogAnimation.dismiss();
-                                Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onError(String msg) {
-                                dialogAnimation.dismiss();
-                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
+                        final Animation animationFade = AnimationUtils.loadAnimation(getContext(), R.anim.fade);
+                        recyclerView.startAnimation(animationFade);
+                        dialogAnimation.dismiss();
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animation animation) { }
+                    public void onError(String msg) {
+                        dialogAnimation.dismiss();
+                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    }
                 });
-
-                recyclerView.getChildAt(repository.getDebtsToMe().indexOf(debt))
-                        .startAnimation(animationFade);
-
                 dialog.dismiss();
             }
         });

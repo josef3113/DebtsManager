@@ -87,50 +87,32 @@ public class ManagerAllDebtsFragment extends Fragment implements LongPressReader
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                final Animation animationFade = AnimationUtils.loadAnimation(getContext(),R.anim.fade);
-                animationFade.setAnimationListener(new Animation.AnimationListener() {
+                final DialogAnimation dialogAnimation = new DialogAnimation();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("text", "Delete From DB");
+                dialogAnimation.setArguments(bundle);
+
+                dialogAnimation.show(transaction, "dialog");
+
+                repository.deleteDebt(debt, new RequestListener() {
                     @Override
-                    public void onAnimationStart(Animation animation) {
+                    public void onComplete(Object o) {
 
+                        Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
+                        final Animation animationFade = AnimationUtils.loadAnimation(getContext(), R.anim.fade);
+                        managerAllDebts.startAnimation(animationFade);
+                        dialogAnimation.dismiss();
                     }
 
                     @Override
-                    public void onAnimationEnd(Animation animation) {
-                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-
-                        final DialogAnimation dialogAnimation = new DialogAnimation();
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("text","Delete From DB");
-                        dialogAnimation.setArguments(bundle);
-
-                        dialogAnimation.show(transaction,"dialog");
-
-                        repository.deleteDebt(debt, new RequestListener() {
-                            @Override
-                            public void onComplete(Object o) {
-                                dialogAnimation.dismiss();
-                                Toast.makeText(getContext(), "Debt Deleted", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onError(String msg) {
-                                dialogAnimation.dismiss();
-                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
+                    public void onError(String msg) {
+                        dialogAnimation.dismiss();
+                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                     }
                 });
-
-                managerAllDebts.getChildAt(repository.getAllDebts().indexOf(debt))
-                        .startAnimation(animationFade);
                 dialog.dismiss();
             }
         });
